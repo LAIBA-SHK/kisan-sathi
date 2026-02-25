@@ -338,6 +338,46 @@ def detect_disease():
 
 
 # ═══════════════════════════════════════════════
+# AI CHAT PROXY (keeps HF token safe in backend)
+# ═══════════════════════════════════════════════
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    HF_TOKEN = os.environ.get('HF_TOKEN', '')
+    HF_MODEL = 'Qwen/Qwen2.5-72B-Instruct'
+    HF_API   = 'https://router.huggingface.co/v1/chat/completions'
+
+    if not HF_TOKEN:
+        return jsonify({'error': 'HF_TOKEN not set on server'}), 500
+
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify({'error': 'Invalid JSON'}), 400
+
+    try:
+        payload = {
+            'model':       HF_MODEL,
+            'messages':    data.get('messages', []),
+            'max_tokens':  data.get('max_tokens', 700),
+            'temperature': data.get('temperature', 0.6),
+            'stream':      False,
+        }
+        resp = requests.post(
+            HF_API,
+            headers={
+                'Content-Type':  'application/json',
+                'Authorization': f'Bearer {HF_TOKEN}',
+            },
+            json=payload,
+            timeout=30,
+        )
+        return jsonify(resp.json()), resp.status_code
+    except Exception:
+        print(f'❌ Chat error:\n{traceback.format_exc()}')
+        return jsonify({'error': 'Chat request failed'}), 500
+
+
+# ═══════════════════════════════════════════════
 # CORS + RUN
 # ═══════════════════════════════════════════════
 

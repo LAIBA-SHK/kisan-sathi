@@ -3167,7 +3167,7 @@
           rainfall: +g("rain").value,
         };
         try {
-          const r = await fetch("http://localhost:5000/api/recommend", {
+          const r = await fetch("/api/recommend", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(p),
@@ -3232,7 +3232,7 @@
         hide("wxC");
         try {
           const r = await fetch(
-            `http://localhost:5000/api/weather?city=${city}`,
+            `/api/weather?city=${city}`,
           );
           const d = await r.json();
           hide("wxL");
@@ -3369,7 +3369,7 @@
         formData.append("image", file);
 
         try {
-          const res = await fetch("http://localhost:5000/api/disease", {
+          const res = await fetch("/api/disease", {
             method: "POST",
             body: formData,
           });
@@ -3570,14 +3570,11 @@ Rules: exactly 3 steps, exactly 2 chemicals, very simple words a village farmer 
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${HF_TOKEN}`,
             },
             body: JSON.stringify({
-              model: HF_MODEL,
               messages: [{ role: "user", content: prompt }],
               max_tokens: 600,
               temperature: 0.3,
-              stream: false,
             }),
           });
           const data = await res.json();
@@ -3744,17 +3741,14 @@ Keep answers short, practical, and use words a village farmer understands.`;
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${HF_TOKEN}`,
             },
             body: JSON.stringify({
-              model: HF_MODEL,
               messages: [
                 { role: "system", content: systemMsg },
                 ..._imgChatHistory,
               ],
               max_tokens: 500,
               temperature: 0.5,
-              stream: false,
             }),
           });
           const data = await res.json();
@@ -3818,9 +3812,9 @@ Keep answers short, practical, and use words a village farmer understands.`;
         }
       });
 
-      const HF_TOKEN = "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";
+      const HF_TOKEN = "";
       const HF_MODEL = "Qwen/Qwen2.5-72B-Instruct";
-      const HF_API = "https://router.huggingface.co/v1/chat/completions";
+      const HF_API = "/api/chat";
 
       const SYSTEM_PROMPT = `You are Kisan Sathi (کسان ساتھی), a warm and knowledgeable agricultural AI assistant for farmers in Pakistan and South Asia.
 
@@ -3892,17 +3886,14 @@ Keep answers practical, specific, and 3-6 sentences. Use friendly tone. Avoid ov
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${HF_TOKEN}`,
             },
             body: JSON.stringify({
-              model: HF_MODEL,
               messages: [
                 { role: "system", content: SYSTEM_PROMPT },
                 { role: "user", content: msg },
               ],
               max_tokens: 700,
               temperature: 0.6,
-              stream: false,
             }),
           });
 
