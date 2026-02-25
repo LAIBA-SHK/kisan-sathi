@@ -1,0 +1,4310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Kisan Sathi — Smart Farming Assistant</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gd: #1a4731;
+        --gm: #2d6a4f;
+        --gl: #40916c;
+        --gb: #52b788;
+        --gp: #d8f3dc;
+        --gxp: #f0faf2;
+        --white: #ffffff;
+        --cream: #f7f9f7;
+        --td: #1a2e1a;
+        --tm: #2d4a35;
+        --tl: #5a7a60;
+        --shadow: rgba(26, 71, 49, 0.12);
+        --shadow-md: rgba(26, 71, 49, 0.18);
+        --urdu: "Noto Nastaliq Urdu", serif;
+        --serif: "Playfair Display", Georgia, serif;
+        --body: "DM Sans", sans-serif;
+        --r: 16px;
+        --rsm: 10px;
+        --rlg: 24px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--body);
+        background: var(--cream);
+        color: var(--td);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 700px 500px at 10% 5%,
+            rgba(40, 130, 80, 0.06) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 600px 400px at 90% 95%,
+            rgba(40, 130, 80, 0.05) 0%,
+            transparent 60%
+          );
+      }
+      .wrap {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── HEADER ── */
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--gd) 0%,
+          var(--gm) 65%,
+          var(--gl) 100%
+        );
+        box-shadow: 0 4px 28px rgba(0, 0, 0, 0.18);
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        overflow: hidden;
+      }
+      header::after {
+        content: "";
+        position: absolute;
+        top: -60%;
+        right: -5%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.06) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .hdr {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 28px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+        z-index: 1;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+        margin-right: auto;
+      }
+      .logo-ico {
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+      .logo-name {
+        font-family: var(--serif);
+        font-size: 1.65rem;
+        font-weight: 700;
+        font-style: italic;
+        color: #fff;
+        letter-spacing: -0.01em;
+        line-height: 1;
+      }
+      .logo-sub {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.65);
+        margin-top: 2px;
+      }
+      nav {
+        display: flex;
+        gap: 2px;
+      }
+      .nb {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: var(--body);
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.65);
+        padding: 8px 14px;
+        border-radius: 8px;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+        letter-spacing: 0.01em;
+      }
+      .nb:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .nb.on {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.18);
+      }
+      .nb svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+
+      /* ── MAIN ── */
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 44px 24px 100px;
+      }
+      .sec {
+        display: none;
+        animation: fadeUp 0.3s ease;
+      }
+      .sec.on {
+        display: block;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .sec-head {
+        margin-bottom: 36px;
+      }
+      .eyebrow {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gb);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .eyebrow::before {
+        content: "";
+        width: 22px;
+        height: 2px;
+        background: var(--gb);
+        border-radius: 1px;
+      }
+      .sec-title {
+        font-family: var(--serif);
+        font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+        font-weight: 700;
+        color: var(--gd);
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+      }
+      .sec-urdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 1.05rem;
+        color: var(--tl);
+        margin-top: 6px;
+        display: block;
+        line-height: 2;
+      }
+
+      /* ── CARD ── */
+      .card {
+        background: var(--white);
+        border-radius: var(--rlg);
+        border: 1px solid rgba(82, 183, 136, 0.14);
+        box-shadow: 0 4px 24px var(--shadow);
+        padding: 32px;
+        transition: box-shadow 0.2s;
+      }
+      .card:hover {
+        box-shadow: 0 8px 36px var(--shadow-md);
+      }
+
+      /* ── HOME ── */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--gd) 0%,
+          var(--gm) 60%,
+          var(--gl) 100%
+        );
+        border-radius: var(--rlg);
+        padding: 56px 52px;
+        color: #fff;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 32px;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -30%;
+        right: -5%;
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.06) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+      }
+      .hero-vis {
+        position: relative;
+        z-index: 1;
+        font-size: 120px;
+        line-height: 1;
+        opacity: 0.22;
+        filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.3));
+        flex-shrink: 0;
+      }
+      .hero-cnt {
+        position: relative;
+        z-index: 1;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 100px;
+        padding: 5px 14px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.9);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      .hp {
+        width: 7px;
+        height: 7px;
+        background: #74c69d;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.45;
+          transform: scale(1.4);
+        }
+      }
+      .hero h1 {
+        font-family: var(--serif);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        font-style: italic;
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+        margin-bottom: 14px;
+      }
+      .hero-urdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 1.1rem;
+        line-height: 2.2;
+        color: rgba(255, 255, 255, 0.78);
+        display: block;
+        margin-bottom: 30px;
+      }
+      .hero-btns {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .btn-wh {
+        background: #fff;
+        color: var(--gd);
+        border: none;
+        cursor: pointer;
+        font-family: var(--body);
+        font-size: 0.88rem;
+        font-weight: 700;
+        padding: 13px 26px;
+        border-radius: 50px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-wh:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      }
+      .btn-ol {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1.5px solid rgba(255, 255, 255, 0.35);
+        color: #fff;
+        cursor: pointer;
+        font-family: var(--body);
+        font-size: 0.88rem;
+        font-weight: 600;
+        padding: 12px 26px;
+        border-radius: 50px;
+        transition: all 0.2s;
+      }
+      .btn-ol:hover {
+        background: rgba(255, 255, 255, 0.22);
+      }
+
+      .feat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 28px;
+      }
+      .feat {
+        background: var(--white);
+        border: 1px solid rgba(82, 183, 136, 0.15);
+        border-radius: var(--r);
+        padding: 28px 22px;
+        cursor: pointer;
+        transition: all 0.22s;
+        position: relative;
+        overflow: hidden;
+      }
+      .feat::before {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        width: 90px;
+        height: 90px;
+        background: var(--gxp);
+        border-radius: 50%;
+        transition: transform 0.3s;
+      }
+      .feat:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 36px var(--shadow-md);
+        border-color: var(--gb);
+      }
+      .feat:hover::before {
+        transform: scale(1.5);
+      }
+      .feat-ico {
+        width: 52px;
+        height: 52px;
+        background: var(--gxp);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 18px;
+        position: relative;
+        z-index: 1;
+        transition: background 0.2s;
+      }
+      .feat:hover .feat-ico {
+        background: var(--gp);
+      }
+      .feat-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--gd);
+        margin-bottom: 4px;
+        position: relative;
+        z-index: 1;
+      }
+      .feat-urdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.85rem;
+        color: var(--tl);
+        display: block;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
+      }
+      .feat-desc {
+        font-size: 0.78rem;
+        color: var(--tl);
+        line-height: 1.65;
+        position: relative;
+        z-index: 1;
+      }
+      .feat-arr {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 30px;
+        height: 30px;
+        background: var(--gxp);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: var(--gl);
+        transition: all 0.2s;
+      }
+      .feat:hover .feat-arr {
+        background: var(--gb);
+        color: #fff;
+        transform: translate(2px, -2px);
+      }
+
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .scard {
+        background: var(--white);
+        border: 1px solid rgba(82, 183, 136, 0.15);
+        border-radius: var(--r);
+        padding: 26px 24px;
+        text-align: center;
+        border-top: 3px solid var(--gb);
+      }
+      .snum {
+        font-family: var(--serif);
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--gd);
+      }
+      .slbl {
+        font-size: 0.82rem;
+        color: var(--tl);
+        margin-top: 4px;
+      }
+      .surdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.85rem;
+        color: var(--tl);
+      }
+
+      /* ── CROP ── */
+      .crop-layout {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 24px;
+        align-items: start;
+      }
+      .fgrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-bottom: 24px;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .flbl {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--tm);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .flbl-u {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.78rem;
+        color: var(--gb);
+        font-weight: 400;
+        text-transform: none;
+        letter-spacing: 0;
+      }
+      .srow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        flex: 1;
+        height: 4px;
+        background: linear-gradient(to right, var(--gb), var(--gp));
+        border-radius: 2px;
+        outline: none;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--gm);
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 8px rgba(26, 71, 49, 0.3);
+        cursor: pointer;
+        transition: transform 0.15s;
+      }
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+      }
+      .sval {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--gd);
+        min-width: 62px;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .fsel {
+        background: var(--cream);
+        border: 1.5px solid rgba(82, 183, 136, 0.25);
+        border-radius: var(--rsm);
+        color: var(--td);
+        font-family: var(--body);
+        font-size: 0.9rem;
+        padding: 11px 14px;
+        outline: none;
+        width: 100%;
+        transition:
+          border-color 0.18s,
+          box-shadow 0.18s;
+        appearance: none;
+        cursor: pointer;
+      }
+      .fsel:focus {
+        border-color: var(--gb);
+        box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.15);
+      }
+      .btn-g {
+        background: linear-gradient(135deg, var(--gm), var(--gd));
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-family: var(--body);
+        font-size: 0.9rem;
+        font-weight: 700;
+        padding: 15px 32px;
+        border-radius: 50px;
+        box-shadow: 0 6px 20px rgba(26, 71, 49, 0.25);
+        transition: all 0.22s;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        letter-spacing: 0.02em;
+      }
+      .btn-g:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(26, 71, 49, 0.35);
+      }
+
+      .rpanel {
+        background: var(--white);
+        border: 1px solid rgba(82, 183, 136, 0.15);
+        border-radius: var(--rlg);
+        overflow: hidden;
+        box-shadow: 0 4px 24px var(--shadow);
+        position: sticky;
+        top: 88px;
+      }
+      .rtop {
+        background: linear-gradient(135deg, var(--gd), var(--gm));
+        padding: 30px;
+        text-align: center;
+        color: #fff;
+      }
+      .remoji {
+        font-size: 54px;
+        margin-bottom: 10px;
+        line-height: 1;
+      }
+      .rname {
+        font-family: var(--serif);
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #fff;
+      }
+      .rurdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.75);
+        margin-top: 4px;
+      }
+      .cbar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        margin: 16px 0 4px;
+        overflow: hidden;
+      }
+      .cfill {
+        height: 100%;
+        background: var(--gb);
+        border-radius: 2px;
+        transition: width 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .ctxt {
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.65);
+        display: flex;
+        justify-content: space-between;
+      }
+      .rbody {
+        padding: 22px 28px 28px;
+      }
+      .smrow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+      .sm {
+        background: var(--gxp);
+        border: 1px solid var(--gp);
+        border-radius: var(--rsm);
+        padding: 12px;
+      }
+      .sml {
+        font-size: 0.67rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--tl);
+        margin-bottom: 3px;
+      }
+      .smv {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--gd);
+      }
+      .rdesc {
+        font-size: 0.83rem;
+        color: var(--tm);
+        line-height: 1.75;
+        margin-bottom: 14px;
+      }
+      .tipsh {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--gb);
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .tip {
+        display: flex;
+        gap: 8px;
+        font-size: 0.8rem;
+        color: var(--tm);
+        line-height: 1.65;
+        margin-bottom: 6px;
+      }
+      .tip::before {
+        content: "✦";
+        color: var(--gb);
+        flex-shrink: 0;
+        font-size: 0.65rem;
+        margin-top: 3px;
+      }
+      .utip {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.85rem;
+        color: var(--tl);
+        line-height: 2.2;
+        border-top: 1px solid var(--gp);
+        padding-top: 12px;
+        margin-top: 12px;
+      }
+      .rph {
+        padding: 60px 28px;
+        text-align: center;
+        color: var(--tl);
+      }
+      .rph .pi {
+        font-size: 52px;
+        opacity: 0.3;
+        margin-bottom: 16px;
+      }
+      .rph .pu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.95rem;
+        line-height: 2.2;
+        margin-top: 8px;
+      }
+
+      .spin {
+        width: 36px;
+        height: 36px;
+        border: 3px solid var(--gp);
+        border-top-color: var(--gm);
+        border-radius: 50%;
+        animation: sp 0.75s linear infinite;
+        margin: 48px auto 12px;
+      }
+      @keyframes sp {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── WEATHER ── */
+      .cbar2 {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+      }
+      .chip {
+        background: var(--white);
+        border: 1.5px solid rgba(82, 183, 136, 0.2);
+        border-radius: 100px;
+        padding: 7px 16px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--tm);
+        cursor: pointer;
+        transition: all 0.18s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1px;
+      }
+      .chip span {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.72rem;
+        color: var(--tl);
+      }
+      .chip:hover {
+        border-color: var(--gb);
+        color: var(--gd);
+      }
+      .chip.on {
+        background: var(--gm);
+        color: #fff;
+        border-color: var(--gm);
+      }
+      .chip.on span {
+        color: rgba(255, 255, 255, 0.75);
+      }
+      .wxhero {
+        background: linear-gradient(
+          160deg,
+          var(--gd) 0%,
+          var(--gm) 55%,
+          var(--gl) 100%
+        );
+        border-radius: var(--rlg);
+        padding: 36px;
+        color: #fff;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+      .wxhero::after {
+        content: "";
+        position: absolute;
+        bottom: -40px;
+        right: -40px;
+        width: 220px;
+        height: 220px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+      }
+      .wxtop {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 28px;
+        position: relative;
+        z-index: 1;
+      }
+      .wxtemp {
+        font-family: var(--serif);
+        font-size: 5.5rem;
+        line-height: 1;
+        font-weight: 700;
+      }
+      .wxtemp sup {
+        font-size: 1.8rem;
+        vertical-align: super;
+      }
+      .wxcity {
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+      .wxcityu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .wxcond {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.65);
+        margin-top: 4px;
+      }
+      .wxstats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        position: relative;
+        z-index: 1;
+      }
+      .wxs {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: var(--rsm);
+        padding: 16px;
+        text-align: center;
+        backdrop-filter: blur(8px);
+      }
+      .wxsi {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+      }
+      .wxsv {
+        font-size: 1.15rem;
+        font-weight: 700;
+      }
+      .wxsl {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .wxsu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.55);
+      }
+      .fcrow {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .fcd {
+        background: var(--white);
+        border: 1px solid rgba(82, 183, 136, 0.15);
+        border-radius: var(--rsm);
+        padding: 14px 6px;
+        text-align: center;
+        box-shadow: 0 2px 8px var(--shadow);
+      }
+      .fcdn {
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: var(--tl);
+        letter-spacing: 0.04em;
+      }
+      .fcdi {
+        font-size: 1.5rem;
+        margin: 7px 0;
+      }
+      .fcdt {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--gd);
+      }
+      .fcdr {
+        font-size: 0.68rem;
+        color: #4a90c4;
+        margin-top: 3px;
+      }
+      .advbox {
+        background: var(--gxp);
+        border: 1.5px solid var(--gp);
+        border-radius: var(--r);
+        padding: 22px 26px;
+      }
+      .advlbl {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--gb);
+        margin-bottom: 10px;
+      }
+      .advtxt {
+        font-size: 0.86rem;
+        color: var(--tm);
+        line-height: 1.75;
+        margin-bottom: 8px;
+      }
+      .advu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.9rem;
+        color: var(--tl);
+        line-height: 2.2;
+        border-top: 1px solid var(--gp);
+        padding-top: 10px;
+        margin-top: 8px;
+      }
+
+      /* ── DISEASE ── */
+      .dlayout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        align-items: start;
+      }
+      .upzone {
+        border: 2.5px dashed rgba(82, 183, 136, 0.35);
+        border-radius: var(--rlg);
+        text-align: center;
+        cursor: pointer;
+        background: var(--white);
+        transition: all 0.22s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .upzone:hover,
+      .upzone.drag {
+        border-color: var(--gb);
+        background: var(--gxp);
+      }
+      .uico {
+        font-size: 3rem;
+        opacity: 0.5;
+      }
+      .utit {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--gm);
+      }
+      .uurdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.9rem;
+        color: var(--tl);
+      }
+      .usub {
+        font-size: 0.72rem;
+        color: var(--tl);
+      }
+      /* result card */
+      .dcard {
+        background: var(--white);
+        border: 1.5px solid #e5e7eb;
+        border-radius: var(--rlg);
+        overflow: hidden;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+      }
+      .dcard-header {
+        padding: 20px 22px 16px;
+        border-bottom: 1px solid #f3f4f6;
+      }
+      .dcard-body {
+        padding: 20px 22px;
+      }
+      .d-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 100px;
+        padding: 4px 12px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .d-badge.disease {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+      }
+      .d-badge.healthy {
+        background: #f0fdf4;
+        color: #16a34a;
+        border: 1px solid #bbf7d0;
+      }
+      .d-name {
+        font-size: 1.18rem;
+        font-weight: 700;
+        color: #111;
+        margin-bottom: 2px;
+      }
+      .d-urdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.95rem;
+        color: var(--tl);
+        display: block;
+        margin-bottom: 14px;
+      }
+      .d-meta {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .d-conf {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 100px;
+        padding: 3px 12px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #16a34a;
+      }
+      .d-sev-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 140px;
+      }
+      .d-sev-lbl {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--tl);
+        white-space: nowrap;
+      }
+      .sevbar {
+        flex: 1;
+        height: 5px;
+        background: #f3f4f6;
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .sevfill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 1.2s ease;
+      }
+      /* section blocks inside card */
+      .d-section {
+        padding: 16px 22px;
+        border-top: 1px solid #f3f4f6;
+      }
+      .d-section-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--tl);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .d-desc {
+        font-size: 0.84rem;
+        color: var(--tm);
+        line-height: 1.8;
+      }
+      .d-desc .urdu-part {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.85rem;
+        color: var(--tl);
+        line-height: 2.3;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed #e5e7eb;
+        display: block;
+      }
+      /* steps */
+      .d-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 8px 0;
+        border-bottom: 1px dashed #f3f4f6;
+      }
+      .d-step:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .d-step-num {
+        width: 22px;
+        height: 22px;
+        background: linear-gradient(135deg, var(--gm), var(--gd));
+        border-radius: 50%;
+        color: #fff;
+        font-size: 0.68rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .d-step-text {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.9rem;
+        color: #7d5a00;
+        line-height: 2;
+        flex: 1;
+        text-align: right;
+      }
+      /* chemicals */
+      .chem-item {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 10px 0;
+        border-bottom: 1px dashed #fee2e2;
+      }
+      .chem-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .chem-dot {
+        width: 8px;
+        height: 8px;
+        background: #dc2626;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 6px;
+      }
+      .chem-en {
+        font-size: 0.83rem;
+        color: #374151;
+        line-height: 1.6;
+        font-weight: 500;
+      }
+      .chem-ur {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.8rem;
+        color: var(--tl);
+        line-height: 2;
+        display: block;
+        margin-top: 2px;
+      }
+      /* common diseases */
+      .cgrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .ccard {
+        background: var(--white);
+        border: 1px solid rgba(82, 183, 136, 0.15);
+        border-radius: var(--r);
+        padding: 14px;
+        transition: all 0.2s;
+        cursor: default;
+      }
+      .ccard:hover {
+        border-color: var(--gb);
+        box-shadow: 0 4px 12px var(--shadow);
+        transform: translateY(-1px);
+      }
+      .ccico {
+        font-size: 1.2rem;
+        margin-bottom: 6px;
+      }
+      .ccname {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--gd);
+      }
+      .ccurdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.76rem;
+        color: var(--tl);
+      }
+      .ccdesc {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.72rem;
+        color: var(--tl);
+        line-height: 2;
+        margin-top: 4px;
+      }
+      /* imgchat */
+      .imgchat-wrap {
+        margin-top: 16px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: var(--rlg);
+        overflow: hidden;
+        background: var(--white);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+      }
+      .imgchat-hdr {
+        background: linear-gradient(135deg, var(--gd), var(--gm));
+        padding: 12px 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+      .imgchat-msgs {
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: 180px;
+        max-height: 180px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--gp) transparent;
+        flex-shrink: 0;
+      }
+      .imgchat-ft {
+        padding: 10px 14px;
+        border-top: 1px solid #f3f4f6;
+        display: flex;
+        gap: 8px;
+        align-items: flex-end;
+      }
+      .imgchat-inp {
+        flex: 1;
+        background: #f9fafb;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 10px;
+        color: var(--td);
+        font-family: var(--body);
+        font-size: 0.83rem;
+        padding: 9px 13px;
+        outline: none;
+        resize: none;
+        min-height: 40px;
+        max-height: 90px;
+        line-height: 1.5;
+        transition: border-color 0.18s;
+      }
+      .imgchat-inp:focus {
+        border-color: var(--gb);
+      }
+      .imgchat-send {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--gm), var(--gd));
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(26, 71, 49, 0.2);
+        flex-shrink: 0;
+      }
+
+      /* ── CHAT ── */
+      .chwrap {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 185px);
+        max-height: 780px;
+        min-height: 520px;
+        background: var(--white);
+        border: 1px solid rgba(82, 183, 136, 0.18);
+        border-radius: var(--rlg);
+        overflow: hidden;
+        box-shadow: 0 6px 32px var(--shadow);
+      }
+      .chhdr {
+        padding: 18px 26px;
+        border-bottom: 1px solid var(--gp);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: linear-gradient(135deg, var(--gd), var(--gm));
+        flex-shrink: 0;
+      }
+      .chav {
+        width: 42px;
+        height: 42px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .chtit {
+        font-size: 0.94rem;
+        font-weight: 700;
+        color: #fff;
+      }
+      .chonl {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 2px;
+      }
+      .odot {
+        width: 6px;
+        height: 6px;
+        background: #74c69d;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      .chmsgs {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--gp) transparent;
+      }
+      .chmsgs::-webkit-scrollbar {
+        width: 4px;
+      }
+      .chmsgs::-webkit-scrollbar-thumb {
+        background: var(--gp);
+        border-radius: 2px;
+      }
+      .msg {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        animation: mIn 0.25s ease;
+      }
+      .msg.user {
+        flex-direction: row-reverse;
+      }
+      @keyframes mIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .mav {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+        font-weight: 700;
+      }
+      .aiav {
+        background: linear-gradient(135deg, var(--gm), var(--gd));
+        font-size: 17px;
+      }
+      .userav {
+        background: var(--gxp);
+        border: 1.5px solid var(--gp);
+        color: var(--gd);
+        font-size: 12px;
+      }
+      .mbub {
+        max-width: 73%;
+        padding: 13px 16px;
+        font-size: 0.87rem;
+        line-height: 1.68;
+        border-radius: 16px;
+      }
+      .msg.ai .mbub {
+        background: var(--cream);
+        border: 1px solid rgba(82, 183, 136, 0.15);
+        color: var(--tm);
+        border-radius: 4px 16px 16px 16px;
+      }
+      .msg.user .mbub {
+        background: linear-gradient(135deg, var(--gm), var(--gd));
+        color: #fff;
+        border-radius: 16px 4px 16px 16px;
+      }
+      .murdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.88rem;
+        line-height: 2.2;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(82, 183, 136, 0.15);
+        color: var(--tl);
+      }
+      .msg.user .murdu {
+        border-top-color: rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .typbub {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        padding: 14px 16px;
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--tl);
+        animation: dB 1.4s infinite;
+      }
+      .dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes dB {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        30% {
+          transform: translateY(-7px);
+          opacity: 1;
+        }
+      }
+      .chft {
+        padding: 18px 22px;
+        border-top: 1px solid var(--gp);
+        background: var(--white);
+        flex-shrink: 0;
+      }
+      .qrow {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .qbtn {
+        background: var(--gxp);
+        border: 1px solid var(--gp);
+        border-radius: 100px;
+        padding: 5px 13px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--gm);
+        cursor: pointer;
+        transition: all 0.18s;
+        font-family: var(--body);
+      }
+      .qbtn:hover {
+        background: var(--gp);
+        border-color: var(--gb);
+        color: var(--gd);
+      }
+      .inrow {
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+      }
+      .chinp {
+        flex: 1;
+        background: var(--cream);
+        border: 1.5px solid rgba(82, 183, 136, 0.2);
+        border-radius: 12px;
+        color: var(--td);
+        font-family: var(--body);
+        font-size: 0.88rem;
+        padding: 12px 16px;
+        outline: none;
+        resize: none;
+        min-height: 48px;
+        max-height: 130px;
+        line-height: 1.5;
+        transition:
+          border-color 0.18s,
+          box-shadow 0.18s;
+      }
+      .micbtn {
+        width: 46px;
+        height: 46px;
+        background: var(--cream);
+        border: 1.5px solid rgba(82, 183, 136, 0.25);
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.18s;
+      }
+      .micbtn:hover {
+        border-color: var(--gb);
+        background: var(--gxp);
+      }
+      .micbtn svg {
+        width: 20px;
+        height: 20px;
+        color: var(--gm);
+      }
+      .chinp:focus {
+        border-color: var(--gb);
+        box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.12);
+      }
+      .chinp::placeholder {
+        color: var(--tl);
+      }
+      .sbtn {
+        width: 46px;
+        height: 46px;
+        background: linear-gradient(135deg, var(--gm), var(--gd));
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 14px rgba(26, 71, 49, 0.25);
+        transition: all 0.18s;
+      }
+      .sbtn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 7px 20px rgba(26, 71, 49, 0.35);
+      }
+      .sbtn svg {
+        width: 18px;
+        height: 18px;
+        color: #fff;
+      }
+      .micbtn.recording {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        border-color: #e74c3c;
+        animation: recPulse 1s infinite;
+      }
+      .micbtn.recording svg {
+        color: #fff;
+      }
+      @keyframes recPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 0 8px rgba(231, 76, 60, 0);
+        }
+      }
+      .rectxt {
+        font-size: 0.7rem;
+        color: #e74c3c;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+      .speakbtn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: none;
+        border: 1px solid transparent;
+        cursor: pointer;
+        padding: 4px 8px 4px 4px;
+        border-radius: 100px;
+        margin-top: 8px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--tl);
+        transition: all 0.18s;
+      }
+      .speakbtn:hover {
+        background: var(--gxp);
+        border-color: var(--gp);
+        color: var(--gm);
+      }
+      .speakbtn.speaking {
+        background: var(--gxp);
+        border-color: var(--gb);
+        color: var(--gm);
+      }
+      .speakbtn svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+
+      /* ── PRICING ── */
+      .price-card {
+        background: var(--white);
+        border: 1.5px solid #e5e7eb;
+        border-radius: var(--rlg);
+        padding: 28px 24px;
+        position: relative;
+        transition:
+          box-shadow 0.2s,
+          transform 0.2s;
+      }
+      .price-card:hover {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transform: translateY(-3px);
+      }
+      .price-card-pro {
+        background: linear-gradient(145deg, var(--gd), var(--gm));
+        border-color: transparent;
+        box-shadow: 0 12px 40px rgba(26, 71, 49, 0.3);
+      }
+      .price-card-pro:hover {
+        box-shadow: 0 18px 50px rgba(26, 71, 49, 0.4);
+        transform: translateY(-4px);
+      }
+      .price-popular {
+        position: absolute;
+        top: -13px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: #fff;
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 4px 14px;
+        border-radius: 100px;
+        white-space: nowrap;
+        letter-spacing: 0.05em;
+      }
+      .price-tier {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--gd);
+        margin-bottom: 2px;
+      }
+      .price-urdu {
+        font-family: var(--urdu);
+        direction: rtl;
+        font-size: 0.78rem;
+        color: var(--tl);
+        margin-bottom: 14px;
+        display: block;
+      }
+      .price-amount {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--gd);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+      .price-per {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--tl);
+        margin-left: 2px;
+      }
+      .price-desc {
+        font-size: 0.78rem;
+        color: var(--tl);
+        line-height: 1.6;
+        margin-bottom: 16px;
+      }
+      .price-divider {
+        border: none;
+        border-top: 1px solid #e5e7eb;
+        margin: 16px 0;
+      }
+      .price-features {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .price-features li {
+        font-size: 0.81rem;
+        color: var(--tm);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .pf-yes {
+        color: #16a34a;
+        font-weight: 700;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+      }
+      .pf-yes-pro {
+        color: #86efac;
+      }
+      .pf-no {
+        color: #d1d5db;
+        font-weight: 700;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+      }
+      .pf-no-pro {
+        color: rgba(255, 255, 255, 0.25);
+      }
+      .price-btn {
+        width: 100%;
+        padding: 11px 0;
+        border: none;
+        border-radius: 10px;
+        font-family: var(--body);
+        font-size: 0.84rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.18s;
+        letter-spacing: 0.02em;
+      }
+      .price-btn-free {
+        background: var(--gxp);
+        border: 1.5px solid var(--gp);
+        color: var(--gm);
+      }
+      .price-btn-free:hover {
+        background: var(--gp);
+        border-color: var(--gb);
+      }
+      .price-btn-pro {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1.5px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+      }
+      .price-btn-pro:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      @media (max-width: 900px) {
+        .price-grid {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid var(--gp);
+        margin: 24px 0;
+      }
+      .dn {
+        display: none !important;
+      }
+
+      @media (max-width: 1000px) {
+        .feat-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .crop-layout {
+          grid-template-columns: 1fr;
+        }
+        .rpanel {
+          position: static;
+        }
+        .dlayout {
+          grid-template-columns: 1fr;
+        }
+        .stats-row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .price-grid-3 {
+          grid-template-columns: 1fr !important;
+        }
+      }
+      @media (max-width: 700px) {
+        .hero {
+          grid-template-columns: 1fr;
+          padding: 36px 28px;
+        }
+        .hero-vis {
+          display: none;
+        }
+        .feat-grid {
+          grid-template-columns: 1fr;
+        }
+        .fgrid {
+          grid-template-columns: 1fr;
+        }
+        .wxstats {
+          grid-template-columns: 1fr 1fr;
+        }
+        .fcrow {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .hdr {
+          padding: 0 14px;
+        }
+        main {
+          padding: 28px 14px 80px;
+        }
+        .nb span {
+          display: none;
+        }
+        .nb svg {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- HEADER -->
+      <header>
+        <div class="hdr">
+          <a
+            class="logo"
+            href="#"
+            onclick="
+              show('home');
+              return false;
+            "
+          >
+            <div class="logo-ico">🌿</div>
+            <div>
+              <div class="logo-name">Kisan Sathi</div>
+              <div class="logo-sub">کسان ساتھی — Smart Farming</div>
+            </div>
+          </a>
+          <nav>
+            <button class="nb on" onclick="show('home')">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+              <span>Home</span>
+            </button>
+            <button class="nb" onclick="show('crop')">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 22V12m0 0C12 7 7 4 2 6m10 6c0-5 5-8 10-6" />
+              </svg>
+              <span>Crop Advisor</span>
+            </button>
+            <button class="nb" onclick="show('weather')">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M17.5 19H9a7 7 0 110-14h.5A5.5 5.5 0 0117.5 19z" />
+              </svg>
+              <span>Weather</span>
+            </button>
+            <button class="nb" onclick="show('disease')">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <span>Disease</span>
+            </button>
+            <button class="nb" onclick="show('advisor')">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+                />
+              </svg>
+              <span>Ask AI</span>
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <!-- ═══ HOME ═══ -->
+        <section id="home" class="sec on">
+          <div class="hero">
+            <div class="hero-cnt">
+              <div class="hero-badge">
+                <span class="hp"></span>AI Powered · Free to Use
+              </div>
+              <h1>Your smart partner for better farming</h1>
+              <span class="hero-urdu"
+                >فصل مشورہ، موسم کی معلومات، بیماری شناخت اور AI مددگار — سب ایک
+                جگہ۔ بالکل مفت۔</span
+              >
+              <div class="hero-btns">
+                <button class="btn-wh" onclick="show('crop')">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <path d="M12 22V12m0 0C12 7 7 4 2 6m10 6c0-5 5-8 10-6" />
+                  </svg>
+                  Get Crop Advice
+                </button>
+                <button class="btn-ol" onclick="show('advisor')">
+                  AI سے پوچھیں →
+                </button>
+              </div>
+            </div>
+            <div class="hero-vis">🌾</div>
+          </div>
+
+          <div class="feat-grid">
+            <div class="feat" onclick="show('crop')">
+              <div class="feat-arr">↗</div>
+              <div class="feat-ico">🌱</div>
+              <div class="feat-name">Crop Advisor</div>
+              <span class="feat-urdu">فصل مشورہ</span>
+              <div class="feat-desc">
+                Enter your soil data and get AI-powered crop recommendations
+                tailored to your land conditions.
+              </div>
+            </div>
+            <div class="feat" onclick="show('weather')">
+              <div class="feat-arr">↗</div>
+              <div class="feat-ico">🌤️</div>
+              <div class="feat-name">Weather Forecast</div>
+              <span class="feat-urdu">موسم کی پیشگوئی</span>
+              <div class="feat-desc">
+                Live weather and 7-day forecast with farming advisory for your
+                city.
+              </div>
+            </div>
+            <div class="feat" onclick="show('disease')">
+              <div class="feat-arr">↗</div>
+              <div class="feat-ico">🔬</div>
+              <div class="feat-name">Disease Detection</div>
+              <span class="feat-urdu">بیماری کی شناخت</span>
+              <div class="feat-desc">
+                Upload a crop photo — AI will instantly identify the disease and
+                suggest treatment.
+              </div>
+            </div>
+            <div class="feat" onclick="show('advisor')">
+              <div class="feat-arr">↗</div>
+              <div class="feat-ico">💬</div>
+              <div class="feat-name">Ask AI Advisor</div>
+              <span class="feat-urdu">AI سے سوال کریں</span>
+              <div class="feat-desc">
+                Chat with your AI farming expert. Ask any question in Urdu or
+                English.
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-row">
+            <div class="scard">
+              <div class="snum">22+</div>
+              <div class="slbl">Crops Supported</div>
+              <div class="surdu">فصلیں</div>
+            </div>
+            <div class="scard">
+              <div class="snum">12+</div>
+              <div class="slbl">Cities with Live Weather</div>
+              <div class="surdu">شہروں میں موسم</div>
+            </div>
+            <div class="scard">
+              <div class="snum">AI</div>
+              <div class="slbl">Powered by AI</div>
+              <div class="surdu">مصنوعی ذہانت</div>
+            </div>
+          </div>
+
+          <!-- Pricing Plans -->
+          <div style="margin-top: 56px">
+            <div class="sec-head" style="margin-bottom: 32px">
+              <div class="eyebrow">Plans & Pricing</div>
+              <h2 class="sec-title" style="font-size: 1.9rem">
+                Choose Your Plan
+              </h2>
+              <span class="sec-urdu"
+                >اپنا پلان منتخب کریں — کسان کے لیے بالکل موزوں</span
+              >
+            </div>
+
+            <div
+              class="price-grid-3"
+              style="
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 24px;
+                align-items: start;
+              "
+            >
+              <!-- FREE -->
+              <div class="price-card">
+                <div class="price-tier">🌱 Free</div>
+                <div class="price-urdu">مفت پلان</div>
+                <div class="price-amount">
+                  Rs. 0<span class="price-per">/ہمیشہ</span>
+                </div>
+                <div class="price-desc">
+                  Perfect for individual farmers getting started with smart
+                  farming tools.
+                </div>
+                <div class="price-divider"></div>
+                <ul class="price-features">
+                  <li>
+                    <span class="pf-yes">✓</span> Crop Advisor (22+ crops)
+                  </li>
+                  <li>
+                    <span class="pf-yes">✓</span> Live Weather — 12 cities
+                  </li>
+                  <li>
+                    <span class="pf-yes">✓</span> Disease Detection (AI photo
+                    scan)
+                  </li>
+                  <li>
+                    <span class="pf-yes">✓</span> AI Chat — Urdu &amp; English
+                  </li>
+                  <li>
+                    <span class="pf-yes">✓</span> Voice Input &amp;
+                    Text-to-Speech
+                  </li>
+                  <li><span class="pf-no">✗</span> Chat History</li>
+                  <li><span class="pf-no">✗</span> Market Price Tracker</li>
+                  <li><span class="pf-no">✗</span> Mobile App Access</li>
+                </ul>
+                <button class="price-btn price-btn-free" onclick="show('crop')">
+                  Get Started Free →
+                </button>
+              </div>
+
+              <!-- PRO — highlighted -->
+              <div class="price-card price-card-pro">
+                <div class="price-popular">Most Popular ⭐</div>
+                <div class="price-tier" style="color: #fff">🚀 Pro</div>
+                <div class="price-urdu" style="color: rgba(255, 255, 255, 0.7)">
+                  پرو پلان
+                </div>
+                <div class="price-amount" style="color: #fff">
+                  Rs. 499<span
+                    class="price-per"
+                    style="color: rgba(255, 255, 255, 0.6)"
+                    >/ماہ</span
+                  >
+                </div>
+                <div
+                  class="price-desc"
+                  style="color: rgba(255, 255, 255, 0.75)"
+                >
+                  For serious farmers who want deeper insights and tools to
+                  maximize yield.
+                </div>
+                <div
+                  class="price-divider"
+                  style="border-color: rgba(255, 255, 255, 0.15)"
+                ></div>
+                <ul class="price-features">
+                  <li style="color: #fff">
+                    <span class="pf-yes pf-yes-pro">✓</span> Everything in Free
+                  </li>
+                  <li style="color: #fff">
+                    <span class="pf-yes pf-yes-pro">✓</span> Full Chat History
+                  </li>
+                  <li style="color: #fff">
+                    <span class="pf-yes pf-yes-pro">✓</span> Live Market Prices
+                    — all crops
+                  </li>
+                  <li style="color: #fff">
+                    <span class="pf-yes pf-yes-pro">✓</span> Crop Calendar &amp;
+                    SMS Reminders
+                  </li>
+                  <li style="color: #fff">
+                    <span class="pf-yes pf-yes-pro">✓</span> Soil Health Reports
+                  </li>
+                  <li style="color: #fff">
+                    <span class="pf-yes pf-yes-pro">✓</span> Yield Prediction
+                    per acre
+                  </li>
+                  <li style="color: #fff">
+                    <span class="pf-yes pf-yes-pro">✓</span> 7-day weather +
+                    rain alerts
+                  </li>
+                  <li style="color: rgba(255, 255, 255, 0.45)">
+                    <span class="pf-no pf-no-pro">✗</span> Mobile App Access
+                  </li>
+                </ul>
+                <button class="price-btn price-btn-pro">Subscribe Pro →</button>
+              </div>
+
+              <!-- PREMIUM -->
+              <div class="price-card">
+                <div class="price-tier">👑 Premium</div>
+                <div class="price-urdu">پریمیم پلان</div>
+                <div class="price-amount">
+                  Rs. 1,299<span class="price-per">/ماہ</span>
+                </div>
+                <div class="price-desc">
+                  For large farms and agri-businesses needing full features and
+                  mobile access.
+                </div>
+                <div class="price-divider"></div>
+                <ul class="price-features">
+                  <li><span class="pf-yes">✓</span> Everything in Pro</li>
+                  <li>
+                    <span class="pf-yes">✓</span> 📱 Mobile App (Android &amp;
+                    iOS)
+                  </li>
+                  <li>
+                    <span class="pf-yes">✓</span> Multi-farm management
+                    dashboard
+                  </li>
+                  <li>
+                    <span class="pf-yes">✓</span> Export reports (PDF/Excel)
+                  </li>
+                  <li>
+                    <span class="pf-yes">✓</span> Fertilizer &amp; pesticide
+                    calculator
+                  </li>
+                  <li><span class="pf-yes">✓</span> WhatsApp AI assistant</li>
+                  <li><span class="pf-yes">✓</span> Priority AI responses</li>
+                  <li><span class="pf-yes">✓</span> 24/7 dedicated support</li>
+                </ul>
+                <button class="price-btn price-btn-free">Get Premium →</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══ CROP ═══ -->
+        <section id="crop" class="sec">
+          <div class="sec-head">
+            <div class="eyebrow">AI Powered Recommendation</div>
+            <h2 class="sec-title">Crop Advisor</h2>
+            <span class="sec-urdu"
+              >اپنی زمین کی معلومات بھریں — AI بہترین فصل بتائے گا</span
+            >
+          </div>
+          <div class="crop-layout">
+            <div class="card">
+              <div class="fgrid">
+                <div class="field">
+                  <div class="flbl">
+                    Nitrogen (N)<span class="flbl-u">نائٹروجن</span>
+                  </div>
+                  <div class="srow">
+                    <input
+                      type="range"
+                      id="N"
+                      min="0"
+                      max="140"
+                      value="50"
+                      oninput="sv('N', 'Nv', ' kg/ha')"
+                    /><span class="sval" id="Nv">50 kg/ha</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="flbl">
+                    Phosphorus (P)<span class="flbl-u">فاسفورس</span>
+                  </div>
+                  <div class="srow">
+                    <input
+                      type="range"
+                      id="P"
+                      min="5"
+                      max="145"
+                      value="40"
+                      oninput="sv('P', 'Pv', ' kg/ha')"
+                    /><span class="sval" id="Pv">40 kg/ha</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="flbl">
+                    Potassium (K)<span class="flbl-u">پوٹاشیم</span>
+                  </div>
+                  <div class="srow">
+                    <input
+                      type="range"
+                      id="K"
+                      min="5"
+                      max="205"
+                      value="40"
+                      oninput="sv('K', 'Kv', ' kg/ha')"
+                    /><span class="sval" id="Kv">40 kg/ha</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="flbl">
+                    Temperature<span class="flbl-u">درجہ حرارت</span>
+                  </div>
+                  <div class="srow">
+                    <input
+                      type="range"
+                      id="temp"
+                      min="8"
+                      max="43"
+                      value="25"
+                      oninput="sv('temp', 'tv', '°C')"
+                    /><span class="sval" id="tv">25°C</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="flbl">
+                    Humidity<span class="flbl-u">نمی</span>
+                  </div>
+                  <div class="srow">
+                    <input
+                      type="range"
+                      id="hum"
+                      min="14"
+                      max="100"
+                      value="60"
+                      oninput="sv('hum', 'hv', '%')"
+                    /><span class="sval" id="hv">60%</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="flbl">
+                    Soil pH<span class="flbl-u">مٹی pH</span>
+                  </div>
+                  <div class="srow">
+                    <input
+                      type="range"
+                      id="ph"
+                      min="3.5"
+                      max="9.9"
+                      step="0.1"
+                      value="6.5"
+                      oninput="sv('ph', 'phv', '')"
+                    /><span class="sval" id="phv">6.5</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="flbl">
+                    Rainfall<span class="flbl-u">بارش</span>
+                  </div>
+                  <div class="srow">
+                    <input
+                      type="range"
+                      id="rain"
+                      min="20"
+                      max="300"
+                      value="100"
+                      oninput="sv('rain', 'rv', ' mm')"
+                    /><span class="sval" id="rv">100 mm</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="flbl">Season<span class="flbl-u">موسم</span></div>
+                  <select class="fsel" id="season">
+                    <option value="kharif">Kharif — خریف (Apr–Sep)</option>
+                    <option value="rabi">Rabi — ربیع (Oct–Mar)</option>
+                    <option value="any">Any — کوئی بھی</option>
+                  </select>
+                </div>
+              </div>
+              <div style="border-top: 1px solid var(--gp); padding-top: 20px">
+                <button
+                  class="btn-g"
+                  style="width: 100%; justify-content: center"
+                  onclick="getCrop()"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v4l3 3" />
+                  </svg>
+                  Analyse &amp; Recommend — تجزیہ کریں
+                </button>
+              </div>
+            </div>
+            <div class="rpanel" id="rpanel">
+              <div class="rph" id="rph">
+                <div class="pi">🌱</div>
+                <div style="font-size: 0.82rem; color: var(--tl)">
+                  Fill in soil data and click Analyse
+                </div>
+                <div class="pu">
+                  مٹی کی معلومات بھریں اور AI بہترین فصل بتائے گا
+                </div>
+              </div>
+              <div id="rload" class="dn" style="text-align: center">
+                <div class="spin"></div>
+                <div
+                  style="
+                    font-size: 0.8rem;
+                    color: var(--tl);
+                    padding-bottom: 24px;
+                  "
+                >
+                  Analysing...
+                </div>
+              </div>
+              <div id="rres" class="dn">
+                <div class="rtop">
+                  <div class="remoji" id="rE">🌾</div>
+                  <div class="rname" id="rN">—</div>
+                  <div class="rurdu" id="rU">—</div>
+                  <div class="cbar">
+                    <div class="cfill" id="rC" style="width: 0%"></div>
+                  </div>
+                  <div class="ctxt">
+                    <span>AI Confidence</span><span id="rCP">—</span>
+                  </div>
+                </div>
+                <div class="rbody">
+                  <div class="smrow">
+                    <div class="sm">
+                      <div class="sml">Season</div>
+                      <div class="smv" id="rS">—</div>
+                    </div>
+                    <div class="sm">
+                      <div class="sml">Duration</div>
+                      <div class="smv" id="rD">—</div>
+                    </div>
+                    <div class="sm">
+                      <div class="sml">Yield</div>
+                      <div class="smv" id="rY">—</div>
+                    </div>
+                    <div class="sm">
+                      <div class="sml">Water</div>
+                      <div class="smv" id="rW">—</div>
+                    </div>
+                  </div>
+                  <p class="rdesc" id="rDesc"></p>
+                  <div class="tipsh">Cultivation Tips</div>
+                  <div id="rT"></div>
+                  <div class="utip" id="rUT"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══ WEATHER ═══ -->
+        <section id="weather" class="sec">
+          <div class="sec-head">
+            <div class="eyebrow">Live Weather Data</div>
+            <h2 class="sec-title">Weather Forecast</h2>
+            <span class="sec-urdu">موسم کی پیشگوئی اور کاشتکاری مشورہ</span>
+          </div>
+          <div class="cbar2">
+            <div class="chip on" onclick="loadWx('Lahore', this)">
+              Lahore<br /><span>لاہور</span>
+            </div>
+            <div class="chip" onclick="loadWx('Karachi', this)">
+              Karachi<br /><span>کراچی</span>
+            </div>
+            <div class="chip" onclick="loadWx('Islamabad', this)">
+              Islamabad<br /><span>اسلام آباد</span>
+            </div>
+            <div class="chip" onclick="loadWx('Peshawar', this)">
+              Peshawar<br /><span>پشاور</span>
+            </div>
+            <div class="chip" onclick="loadWx('Quetta', this)">
+              Quetta<br /><span>کوئٹہ</span>
+            </div>
+            <div class="chip" onclick="loadWx('Multan', this)">
+              Multan<br /><span>ملتان</span>
+            </div>
+            <div class="chip" onclick="loadWx('Faisalabad', this)">
+              Faisalabad<br /><span>فیصل آباد</span>
+            </div>
+            <div class="chip" onclick="loadWx('Hyderabad', this)">
+              Hyderabad<br /><span>حیدرآباد</span>
+            </div>
+            <div class="chip" onclick="loadWx('Rawalpindi', this)">
+              Rawalpindi<br /><span>راولپنڈی</span>
+            </div>
+            <div class="chip" onclick="loadWx('Sialkot', this)">
+              Sialkot<br /><span>سیالکوٹ</span>
+            </div>
+            <div class="chip" onclick="loadWx('Gujranwala', this)">
+              Gujranwala<br /><span>گجرانوالہ</span>
+            </div>
+            <div class="chip" onclick="loadWx('Sukkur', this)">
+              Sukkur<br /><span>سکھر</span>
+            </div>
+          </div>
+          <div id="wxL" style="text-align: center">
+            <div class="spin"></div>
+          </div>
+          <div id="wxC" class="dn">
+            <div class="wxhero">
+              <div class="wxtop">
+                <div class="wxtemp" id="wxT">—<sup>°C</sup></div>
+                <div>
+                  <div class="wxcity" id="wxCt">—</div>
+                  <div class="wxcityu" id="wxCu">—</div>
+                  <div class="wxcond" id="wxCo">—</div>
+                </div>
+              </div>
+              <div class="wxstats">
+                <div class="wxs">
+                  <div class="wxsi">💧</div>
+                  <div class="wxsv" id="wxH">—</div>
+                  <div class="wxsl">Humidity</div>
+                  <div class="wxsu">نمی</div>
+                </div>
+                <div class="wxs">
+                  <div class="wxsi">🌧️</div>
+                  <div class="wxsv" id="wxR">—</div>
+                  <div class="wxsl">Rainfall</div>
+                  <div class="wxsu">بارش</div>
+                </div>
+                <div class="wxs">
+                  <div class="wxsi">💨</div>
+                  <div class="wxsv" id="wxW">—</div>
+                  <div class="wxsl">Wind</div>
+                  <div class="wxsu">ہوا</div>
+                </div>
+              </div>
+            </div>
+            <div class="fcrow" id="fcR"></div>
+            <div class="advbox">
+              <div class="advlbl">🌾 Farming Advisory</div>
+              <div class="advtxt" id="advT"></div>
+              <div class="advu" id="advU"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══ DISEASE ═══ -->
+        <section id="disease" class="sec">
+          <div class="sec-head">
+            <h2 class="sec-title">Disease Detection</h2>
+            <span class="sec-urdu"
+              >فصل کی تصویر لگائیں — AI فوری بیماری پہچانے گا اور علاج بتائے
+              گا</span
+            >
+          </div>
+
+          <div class="dlayout">
+            <!-- LEFT: upload + Ask AI -->
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                position: sticky;
+                top: 20px;
+              "
+            >
+              <input
+                type="file"
+                id="diseaseInput"
+                accept="image/*"
+                style="display: none"
+                onchange="previewAndDetect(event)"
+              />
+
+              <!-- Upload zone -->
+              <div
+                class="upzone"
+                id="uploadArea"
+                style="
+                  cursor: pointer;
+                  position: relative;
+                  min-height: 240px;
+                  padding: 0;
+                  overflow: hidden;
+                "
+              >
+                <div
+                  id="uploadPlaceholder"
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 56px 28px;
+                    width: 100%;
+                  "
+                >
+                  <div class="uico">📸</div>
+                  <div class="utit">Upload Plant Photo</div>
+                  <div class="uurdu">فصل کی تصویر یہاں ڈالیں</div>
+                  <div class="usub">
+                    Click to browse · JPG, PNG · Drag &amp; drop
+                  </div>
+                </div>
+                <div
+                  id="diseasePreview"
+                  style="
+                    display: none;
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    inset: 0;
+                  "
+                >
+                  <img
+                    id="diseaseImg"
+                    alt="Plant photo"
+                    style="
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                      display: block;
+                    "
+                  />
+                  <div
+                    style="
+                      position: absolute;
+                      bottom: 0;
+                      left: 0;
+                      right: 0;
+                      background: linear-gradient(
+                        transparent,
+                        rgba(0, 0, 0, 0.6)
+                      );
+                      padding: 12px 16px;
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    "
+                  >
+                    <span
+                      style="color: #fff; font-size: 0.76rem; font-weight: 600"
+                      >📷 Click to change photo</span
+                    >
+                    <span
+                      style="
+                        font-family: var(--urdu);
+                        direction: rtl;
+                        color: rgba(255, 255, 255, 0.8);
+                        font-size: 0.74rem;
+                      "
+                      >تصویر بدلیں</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Loading -->
+              <div
+                id="diseaseLoading"
+                style="display: none; text-align: center; padding: 28px 0"
+              >
+                <div class="spin"></div>
+                <div
+                  style="font-size: 0.83rem; color: var(--tl); margin-top: 10px"
+                >
+                  Analysing your plant...
+                </div>
+                <div
+                  style="
+                    font-family: var(--urdu);
+                    direction: rtl;
+                    font-size: 0.86rem;
+                    color: var(--tl);
+                    margin-top: 4px;
+                  "
+                >
+                  بیماری کی شناخت ہو رہی ہے۔۔۔
+                </div>
+              </div>
+
+              <!-- Ask AI chat — shown after detection -->
+              <div id="imgChatPanel" class="imgchat-wrap" style="display: none">
+                <div class="imgchat-hdr">
+                  <span style="font-size: 1rem">💬</span>
+                  <div>
+                    <div
+                      style="font-size: 0.82rem; font-weight: 700; color: #fff"
+                    >
+                      اس پودے کے بارے میں پوچھیں
+                    </div>
+                    <div
+                      style="
+                        font-size: 0.68rem;
+                        color: rgba(255, 255, 255, 0.7);
+                      "
+                    >
+                      Ask AI about this plant
+                    </div>
+                  </div>
+                </div>
+                <div id="imgChatMsgs" class="imgchat-msgs"></div>
+                <div class="imgchat-ft">
+                  <button
+                    class="micbtn"
+                    id="imgMicBtn"
+                    title="آواز سے پوچھیں"
+                    onclick="toggleImgVoice()"
+                    style="
+                      width: 40px;
+                      height: 40px;
+                      border-radius: 10px;
+                      flex-shrink: 0;
+                    "
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+                      />
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                      <line x1="12" y1="19" x2="12" y2="23" />
+                      <line x1="8" y1="23" x2="16" y2="23" />
+                    </svg>
+                  </button>
+                  <textarea
+                    id="imgChatInp"
+                    class="imgchat-inp"
+                    rows="1"
+                    placeholder="مثلاً: یہ کتنی خطرناک ہے؟ / Will it spread?"
+                    onkeydown="imgChatKey(event)"
+                    oninput="resize(this)"
+                  ></textarea>
+                  <button class="imgchat-send" onclick="sendImgChat()">
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      stroke-width="2.5"
+                    >
+                      <line x1="22" y1="2" x2="11" y2="13" />
+                      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: result / common diseases -->
+            <div>
+              <!-- Common diseases (before upload) -->
+              <div id="diseaseCommon">
+                <div
+                  style="
+                    font-size: 0.68rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.12em;
+                    color: var(--tl);
+                    margin-bottom: 12px;
+                  "
+                >
+                  Common Diseases — عام بیماریاں
+                </div>
+                <div class="cgrid">
+                  <div class="ccard">
+                    <div class="ccico">🟤</div>
+                    <div class="ccname">Wheat Rust</div>
+                    <div class="ccurdu">گندم کا زنگ</div>
+                    <div class="ccdesc">
+                      پتوں پر نارنجی دھبے، فنگسائیڈ لگائیں
+                    </div>
+                  </div>
+                  <div class="ccard">
+                    <div class="ccico">🟡</div>
+                    <div class="ccname">Cotton Leaf Curl</div>
+                    <div class="ccurdu">کپاس پتہ مروڑ</div>
+                    <div class="ccdesc">پتے مڑ جاتے ہیں، سفید مکھی کنٹرول</div>
+                  </div>
+                  <div class="ccard">
+                    <div class="ccico">⚫</div>
+                    <div class="ccname">Rice Blast</div>
+                    <div class="ccurdu">چاول کا جھلسا</div>
+                    <div class="ccdesc">پتوں پر دھبے، ٹرائی سائکلازول</div>
+                  </div>
+                  <div class="ccard">
+                    <div class="ccico">🔴</div>
+                    <div class="ccname">Tomato Blight</div>
+                    <div class="ccurdu">ٹماٹر کا جھلسا</div>
+                    <div class="ccdesc">پودا سوکھتا ہے، مانکوزیب سپرے</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Error -->
+              <div
+                id="diseaseError"
+                style="
+                  display: none;
+                  background: #fef2f2;
+                  border: 1.5px solid #fecaca;
+                  border-radius: var(--r);
+                  padding: 16px;
+                  color: #dc2626;
+                  font-size: 0.84rem;
+                "
+              ></div>
+
+              <!-- Detection Result -->
+              <div id="diseaseResult" style="display: none">
+                <div class="dcard">
+                  <!-- Header: name + badge -->
+                  <div class="dcard-header">
+                    <div id="diseaseBadge" class="d-badge disease">
+                      🦠 <span id="diseaseStatusWord">Disease Detected</span>
+                    </div>
+                    <div class="d-name" id="diseaseLabel"></div>
+                    <div class="d-urdu" id="diseaseLabelUrdu"></div>
+                    <!-- Confidence + severity -->
+                    <div class="d-meta">
+                      <div
+                        id="diseaseConfidence"
+                        class="d-conf"
+                        style="display: none"
+                      ></div>
+                      <div class="d-sev-wrap">
+                        <span class="d-sev-lbl" id="diseaseSeverityLabel"
+                          >Severity</span
+                        >
+                        <div class="sevbar">
+                          <div class="sevfill" id="diseaseSeverityFill"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- What AI sees -->
+                  <div class="d-section">
+                    <div class="d-section-label">
+                      🔍 <span>AI Analysis</span>
+                    </div>
+                    <div class="d-desc" id="diseaseDesc"></div>
+                  </div>
+
+                  <div class="d-section" style="background: #fffbeb">
+                    <div class="d-section-label" style="color: #92400e">
+                      🌾 <span>Simple steps for farmers</span>
+                    </div>
+                    <div id="diseaseSteps"></div>
+                  </div>
+
+                  <!-- Chemicals -->
+                  <div
+                    class="d-section"
+                    id="diseaseChemicalsBox"
+                    style="background: #fef2f2"
+                  >
+                    <div class="d-section-label" style="color: #991b1b">
+                      ⚗️ <span>Chemicals to Use</span>
+                    </div>
+                    <div id="diseaseChemicals"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══ AI CHAT ═══ -->
+        <section id="advisor" class="sec">
+          <div class="sec-head">
+            <h2 class="sec-title">Ask Kisan Sathi AI</h2>
+            <span class="sec-urdu"
+              >کوئی بھی زراعت سوال پوچھیں — اردو یا انگریزی میں</span
+            >
+          </div>
+          <div class="chwrap">
+            <div class="chhdr">
+              <div class="chav">🌿</div>
+              <div>
+                <div class="chtit">Kisan Sathi AI Advisor</div>
+                <div class="chonl">
+                  <span class="odot"></span>Online · کسان ساتھی AI
+                </div>
+              </div>
+            </div>
+            <div class="chmsgs" id="chatBox">
+              <div class="msg ai">
+                <div class="mav aiav">🌿</div>
+                <div class="mbub">
+                  Assalam-o-Alaikum! I'm your Kisan Sathi AI. Ask me anything
+                  about farming — crops, soil, irrigation, fertilizers, pests,
+                  or diseases. I'll answer in both English and Urdu.
+                  <div class="murdu">
+                    السلام علیکم! میں آپ کا کسان ساتھی AI ہوں۔ فصل، مٹی، پانی،
+                    کھاد، کیڑے — کسی بھی موضوع پر سوال پوچھیں۔
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chft">
+              <div class="qrow">
+                <button
+                  class="qbtn"
+                  onclick="sendQ('What is the best crop for sandy soil?')"
+                >
+                  Sandy soil crop?
+                </button>
+                <button
+                  class="qbtn"
+                  onclick="sendQ('گندم کی بوائی کا صحیح وقت کیا ہے؟')"
+                >
+                  گندم بوائی وقت
+                </button>
+                <button
+                  class="qbtn"
+                  onclick="sendQ('How to control cotton bollworm naturally?')"
+                >
+                  Bollworm control
+                </button>
+                <button
+                  class="qbtn"
+                  onclick="sendQ('کپاس میں یوریا کھاد کب ڈالنی چاہیے؟')"
+                >
+                  کپاس کھاد
+                </button>
+                <button
+                  class="qbtn"
+                  onclick="
+                    sendQ('How to improve soil fertility without chemicals?')
+                  "
+                >
+                  Soil fertility
+                </button>
+              </div>
+              <div class="inrow">
+                <textarea
+                  class="chinp"
+                  id="cInp"
+                  rows="1"
+                  placeholder="Type your question... | اپنا سوال لکھیں"
+                  onkeydown="onKey(event)"
+                  oninput="resize(this)"
+                ></textarea>
+                <button
+                  class="micbtn"
+                  id="micBtn"
+                  title="Voice input — آواز سے سوال پوچھیں"
+                  onclick="toggleVoice()"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="9" y="2" width="6" height="12" rx="3" />
+                    <path d="M5 10a7 7 0 0 0 14 0" />
+                    <line x1="12" y1="19" x2="12" y2="22" />
+                    <line x1="9" y1="22" x2="15" y2="22" />
+                  </svg>
+                </button>
+                <button class="sbtn" onclick="sendMsg()">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <line x1="22" y1="2" x2="11" y2="13" />
+                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                  </svg>
+                </button>
+              </div>
+              <div
+                class="rectxt"
+                id="recTxt"
+                style="text-align: right; margin-top: 4px; height: 14px"
+              ></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+  
+      /* ═══ DATA ════ */
+      const EMO = {
+        rice: "🌾",
+        wheat: "🌿",
+        cotton: "🪴",
+        tomato: "🍅",
+        potato: "🥔",
+        maize: "🌽",
+        sugarcane: "🎋",
+        chickpea: "🟤",
+        lentil: "🟠",
+        mungbean: "🫘",
+        blackgram: "⚫",
+        pigeonpeas: "🟡",
+        kidneybeans: "🔴",
+        mothbeans: "🟤",
+        mango: "🥭",
+        banana: "🍌",
+        grapes: "🍇",
+        onion: "🧅",
+        orange: "🍊",
+        watermelon: "🍉",
+        pomegranate: "💎",
+        coconut: "🥥",
+        papaya: "🍈",
+        jute: "🌿",
+        coffee: "☕",
+      };
+      const URD = {
+        rice: "چاول",
+        wheat: "گندم",
+        cotton: "کپاس",
+        tomato: "ٹماٹر",
+        potato: "آلو",
+        maize: "مکئی",
+        sugarcane: "گنا",
+        chickpea: "چنا",
+        lentil: "مسور",
+        mungbean: "مونگ",
+        blackgram: "ماش",
+        pigeonpeas: "ارہر",
+        kidneybeans: "راجما",
+        mothbeans: "مٹھ",
+        mango: "آم",
+        banana: "کیلا",
+        grapes: "انگور",
+        onion: "پیاز",
+        orange: "مالٹا",
+        watermelon: "تربوز",
+        pomegranate: "انار",
+        coconut: "ناریل",
+        papaya: "پپیتا",
+        jute: "پٹ سن",
+        coffee: "قہوہ",
+      };
+      const CI = {
+        rice: {
+          s: "Kharif (خریف)",
+          d: "120-150 days",
+          y: "40-60 q/ha",
+          w: "High",
+          desc: "Staple crop needing flooded fields and warm climate. Grown widely in Punjab and Sindh.",
+          tips: "Prepare nursery beds,Transplant after 25-30 days,Maintain water level,Apply fertilizers in splits,Control brown planthopper",
+          u: "نرسری تیار کریں ► 25-30 دن بعد پیوند کاری ► پانی کی سطح برقرار رکھیں ► کھاد حصوں میں ڈالیں",
+        },
+        wheat: {
+          s: "Rabi (ربیع)",
+          d: "120-150 days",
+          y: "35-50 q/ha",
+          w: "Moderate",
+          desc: "Most important food crop. The basis of roti consumed by every family.",
+          tips: "Sow October-November,Use certified seeds,Irrigate at critical stages,Control rust with fungicide",
+          u: "اکتوبر-نومبر میں بوائی ► تصدیق شدہ بیج ► اہم مراحل پر آبپاشی ► زنگ کنٹرول",
+        },
+        cotton: {
+          s: "Kharif (خریف)",
+          d: "180-200 days",
+          y: "15-25 q/ha",
+          w: "High",
+          desc: "Backbone of the textile industry and major cash crop. Grown in Punjab and Sindh.",
+          tips: "Deep ploughing,Use Bt varieties,Control leaf curl via whitefly management,IPM for bollworm",
+          u: "گہری کھدائی ► بی ٹی اقسام ► سفید مکھی کنٹرول ► سنڈی کا مربوط انتظام",
+        },
+        potato: {
+          s: "Rabi (ربیع)",
+          d: "70-120 days",
+          y: "250-400 q/ha",
+          w: "Moderate",
+          desc: "Important food crop in cool winter season. KPK and Punjab are major areas.",
+          tips: "Use certified seed tubers,Plant in ridges,Earthing-up essential,Control late blight",
+          u: "تصدیق شدہ بیج ► مٹی چڑھانا ضروری ► جھلسا بیماری کنٹرول",
+        },
+        tomato: {
+          s: "All Season",
+          d: "90-120 days",
+          y: "400-600 q/ha",
+          w: "Moderate",
+          desc: "Most commercially important vegetable. Rich in vitamins, grown across all provinces.",
+          tips: "Raise seedlings in nursery,Transplant at 4-5 weeks,Provide staking,Control early blight",
+          u: "نرسری میں پنیری ► 4-5 ہفتے بعد پیوند کاری ► سہارا دیں ► جلد جھلسا کنٹرول",
+        },
+        maize: {
+          s: "Kharif (خریف)",
+          d: "90-120 days",
+          y: "30-50 q/ha",
+          w: "Moderate",
+          desc: "Important cereal for food and livestock feed across KPK, Punjab, and Sindh.",
+          tips: "Sow April-May,Use hybrid seed,Urea in two splits,Irrigate at silking stage",
+          u: "اپریل-مئی میں بوائی ► ہائبرڈ بیج ► یوریا دو حصوں میں",
+        },
+        sugarcane: {
+          s: "Kharif (خریف)",
+          d: "10-12 months",
+          y: "500-700 q/ha",
+          w: "High",
+          desc: "Major cash crop for sugar and gur production.",
+          tips: "Plant February-March,Use healthy cuttings,Nitrogen in splits,Regular irrigation",
+          u: "فروری-مارچ میں لگائیں ► صحت مند کٹنگ ► نائٹروجن حصوں میں",
+        },
+        chickpea: {
+          s: "Rabi (ربیع)",
+          d: "110-140 days",
+          y: "10-20 q/ha",
+          w: "Low",
+          desc: "Most important pulse crop in Pakistan, rich in protein.",
+          tips: "Sow October-November,Rhizobium inoculation,Avoid excess irrigation,Control Ascochyta blight",
+          u: "اکتوبر-نومبر بوائی ► رائزوبیم ٹریٹمنٹ ► کم آبپاشی",
+        },
+        mungbean: {
+          s: "Kharif (خریف)",
+          d: "60-75 days",
+          y: "8-12 q/ha",
+          w: "Low",
+          desc: "Quick-maturing pulse crop rich in protein, improves soil nitrogen.",
+          tips: "Sow April-June,Rhizobium inoculation,Minimal fertilizer,Harvest when pods brown",
+          u: "اپریل-جون بوائی ► رائزوبیم استعمال ► پھلیاں بھوری ہونے پر کٹائی",
+        },
+        lentil: {
+          s: "Rabi (ربیع)",
+          d: "90-120 days",
+          y: "7-12 q/ha",
+          w: "Low",
+          desc: "Important pulse crop (Masoor) rich in protein and iron.",
+          tips: "Sow October-November,Light 2-3 irrigations,Control weeds early,Harvest when pods brown",
+          u: "اکتوبر-نومبر بوائی ► 2-3 آبپاشی ► جڑی بوٹی کنٹرول",
+        },
+      };
+      const CU = {
+        Lahore: "لاہور",
+        Karachi: "کراچی",
+        Islamabad: "اسلام آباد",
+        Peshawar: "پشاور",
+        Quetta: "کوئٹہ",
+        Multan: "ملتان",
+        Faisalabad: "فیصل آباد",
+        Hyderabad: "حیدرآباد",
+        Rawalpindi: "راولپنڈی",
+        Sialkot: "سیالکوٹ",
+        Gujranwala: "گجرانوالہ",
+        Sukkur: "سکھر",
+      };
+      const WXD = {
+        Lahore: { t: 18, h: 62, r: 2, w: 12 },
+        Karachi: { t: 26, h: 75, r: 0, w: 18 },
+        Islamabad: { t: 14, h: 58, r: 5, w: 8 },
+        Peshawar: { t: 15, h: 52, r: 3, w: 10 },
+        Quetta: { t: 8, h: 45, r: 1, w: 14 },
+        Multan: { t: 20, h: 55, r: 1, w: 9 },
+        Faisalabad: { t: 19, h: 60, r: 2, w: 11 },
+        Hyderabad: { t: 25, h: 68, r: 0, w: 16 },
+        Rawalpindi: { t: 15, h: 57, r: 4, w: 9 },
+        Sialkot: { t: 17, h: 65, r: 3, w: 8 },
+        Gujranwala: { t: 18, h: 63, r: 2, w: 10 },
+        Sukkur: { t: 28, h: 42, r: 0, w: 20 },
+      };
+
+      /* ═══ NAV ════ */
+      const SECS = ["home", "crop", "weather", "disease", "advisor"];
+      function show(id) {
+        SECS.forEach((s) =>
+          document.getElementById(s).classList.toggle("on", s === id),
+        );
+        document
+          .querySelectorAll(".nb")
+          .forEach((b, i) => b.classList.toggle("on", SECS[i] === id));
+        if (id === "weather") loadWx("Lahore", document.querySelector(".chip"));
+      }
+
+      /* ═══ SLIDER ════ */
+      function sv(id, d, sfx) {
+        document.getElementById(d).textContent =
+          document.getElementById(id).value + sfx;
+      }
+
+      /* ═══ CROP ════ */
+      async function getCrop() {
+        show2("rload");
+        hide("rph");
+        hide("rres");
+        const p = {
+          N: +g("N").value,
+          P: +g("P").value,
+          K: +g("K").value,
+          temperature: +g("temp").value,
+          humidity: +g("hum").value,
+          ph: +g("ph").value,
+          rainfall: +g("rain").value,
+        };
+        try {
+          const r = await fetch("http://localhost:5000/api/recommend", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(p),
+          });
+          const d = await r.json();
+          hide("rload");
+          d.error ? demoCrop(p) : renderCrop(d);
+        } catch {
+          hide("rload");
+          demoCrop(p);
+        }
+      }
+      function demoCrop(p) {
+        let c = "wheat";
+        if (p.temperature > 30 && p.humidity > 70) c = "rice";
+        else if (p.temperature > 28 && p.humidity < 60) c = "cotton";
+        else if (p.temperature < 18) c = "potato";
+        else if (p.humidity > 80) c = "maize";
+        else if (p.N > 80) c = "sugarcane";
+        else if (p.ph > 7.5) c = "chickpea";
+        const i = CI[c] || CI.wheat;
+        renderCrop({
+          recommendation: c,
+          name: c.charAt(0).toUpperCase() + c.slice(1),
+          season: i.s,
+          duration: i.d,
+          yield: i.y,
+          description: i.desc,
+          tips: i.tips,
+          confidence: Math.floor(Math.random() * 8) + 89,
+        });
+      }
+      function renderCrop(d) {
+        const k = (d.recommendation || "").toLowerCase().replace(/\s/g, "");
+        const i = CI[k] || {};
+        const conf = d.confidence || 93;
+        g("rE").textContent = EMO[k] || "🌱";
+        g("rN").textContent = d.name || d.recommendation;
+        g("rU").textContent = URD[k] || k;
+        g("rS").textContent = d.season || i.s || "—";
+        g("rD").textContent = d.duration || i.d || "—";
+        g("rY").textContent = d.yield || i.y || "—";
+        g("rW").textContent = i.w || "Moderate";
+        g("rDesc").textContent = d.description || i.desc || "";
+        g("rCP").textContent = conf + "%";
+        setTimeout(() => (g("rC").style.width = conf + "%"), 60);
+        g("rT").innerHTML = (d.tips || i.tips || "")
+          .split(",")
+          .map((t) => `<div class="tip">${t.trim()}</div>`)
+          .join("");
+        g("rUT").textContent = i.u || "";
+        show2("rres");
+      }
+
+      /* ═══ WEATHER ════ */
+      async function loadWx(city, el) {
+        document
+          .querySelectorAll(".chip")
+          .forEach((c) => c.classList.remove("on"));
+        if (el) el.classList.add("on");
+        show2("wxL");
+        hide("wxC");
+        try {
+          const r = await fetch(
+            `http://localhost:5000/api/weather?city=${city}`,
+          );
+          const d = await r.json();
+          hide("wxL");
+          d.error ? demoWx(city) : fillWx(city, d);
+        } catch {
+          hide("wxL");
+          demoWx(city);
+        }
+      }
+      function fillWx(city, d) {
+        const c = d.current || {};
+        g("wxT").innerHTML =
+          (c.temperature !== undefined ? Math.round(c.temperature) : "--") +
+          "<sup>°C</sup>";
+        g("wxCt").textContent = city;
+        g("wxCu").textContent = CU[city] || city;
+        g("wxCo").textContent = wxD(c.weathercode || 0);
+        g("wxH").textContent = (d.humidity ?? "—") + "%";
+        g("wxR").textContent = (d.rainfall ?? 0) + "mm";
+        g("wxW").textContent = Math.round(c.windspeed || 0) + " km/h";
+        renderFc(d.daily || {});
+        renderAdv(c.temperature, d.humidity, d.rainfall);
+        show2("wxC");
+      }
+      function demoWx(city) {
+        const d = WXD[city] || { t: 20, h: 60, r: 2, w: 10 };
+        g("wxT").innerHTML = d.t + "<sup>°C</sup>";
+        g("wxCt").textContent = city;
+        g("wxCu").textContent = CU[city] || city;
+        g("wxCo").textContent = "Partly Cloudy";
+        g("wxH").textContent = d.h + "%";
+        g("wxR").textContent = d.r + "mm";
+        g("wxW").textContent = d.w + " km/h";
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+          td = new Date().getDay();
+        const icos = ["☀️", "⛅", "🌤️", "🌥️", "🌦️"];
+        let html = "";
+        for (let i = 0; i < 7; i++) {
+          const t = d.t + Math.floor(Math.random() * 6) - 3;
+          const ico = icos[Math.floor(Math.random() * icos.length)];
+          const r =
+            Math.random() > 0.65 ? Math.floor(Math.random() * 5) + "mm" : "—";
+          html += `<div class="fcd"><div class="fcdn">${days[(td + i) % 7]}</div><div class="fcdi">${ico}</div><div class="fcdt">${t}°C</div><div class="fcdr">${r}</div></div>`;
+        }
+        g("fcR").innerHTML = html;
+        renderAdv(d.t, d.h, d.r);
+        show2("wxC");
+      }
+      function renderFc(daily) {
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+          td = new Date().getDay();
+        const mx = daily.temperature_2m_max || [],
+          mn = daily.temperature_2m_min || [],
+          rn = daily.precipitation_sum || [];
+        let html = "";
+        for (let i = 0; i < Math.min(7, mx.length); i++) {
+          const avg = Math.round(((mx[i] || 0) + (mn[i] || 0)) / 2);
+          const r = rn[i] || 0;
+          const ico =
+            r > 5
+              ? "🌧️"
+              : r > 0
+                ? "🌦️"
+                : avg > 35
+                  ? "🌞"
+                  : avg > 25
+                    ? "⛅"
+                    : "🌤️";
+          html += `<div class="fcd"><div class="fcdn">${days[(td + i) % 7]}</div><div class="fcdi">${ico}</div><div class="fcdt">${avg}°C</div><div class="fcdr">${r ? r + "mm" : "—"}</div></div>`;
+        }
+        g("fcR").innerHTML = html || "";
+      }
+      function renderAdv(t, h, r) {
+        let tx = "",
+          u = "";
+        if (t < 15) {
+          tx =
+            "Cold conditions. Ideal for Rabi crops: wheat, mustard, potato. Protect seedlings from frost.";
+          u =
+            "سرد موسم۔ ربیع فصلوں کا بہترین وقت: گندم، سرسوں، آلو۔ پالے سے بچائیں۔";
+        } else if (t > 35) {
+          tx =
+            "High temperature. Ensure adequate irrigation. Avoid spraying between 11am–3pm.";
+          u = "زیادہ گرمی۔ آبپاشی یقینی بنائیں۔ دوپہر 11-3 بجے سپرے نہ کریں۔";
+        } else {
+          tx =
+            "Good weather for field operations. Apply fertilizers, weed, and monitor crops.";
+          u =
+            "کاشتکاری کے کاموں کا موزوں موسم۔ کھاد ڈالیں، جڑی بوٹی ہٹائیں، نگرانی کریں۔";
+        }
+        if (r > 10) {
+          tx += " Heavy rain expected — delay irrigation.";
+          u += " زیادہ بارش — آبپاشی ملتوی کریں۔";
+        } else if (!r) {
+          tx += " No rain — keep irrigation regular.";
+          u += " بارش نہیں — آبپاشی باقاعدہ رکھیں۔";
+        }
+        g("advT").textContent = tx;
+        g("advU").textContent = u;
+      }
+      function wxD(c) {
+        if (c === 0) return "Clear Sky";
+        if (c <= 3) return "Partly Cloudy";
+        if (c <= 49) return "Foggy";
+        if (c <= 59) return "Drizzle";
+        if (c <= 69) return "Rainy";
+        if (c <= 79) return "Snow";
+        if (c <= 82) return "Heavy Rain";
+        return "Stormy";
+      }
+
+      async function previewAndDetect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById("diseaseImg").src = e.target.result;
+          document.getElementById("diseasePreview").style.display = "block";
+          document.getElementById("uploadPlaceholder").style.display = "none";
+          document.getElementById("uploadArea").style.minHeight = "280px";
+        };
+        reader.readAsDataURL(file);
+
+        // Reset UI state
+        document.getElementById("diseaseLoading").style.display = "block";
+        document.getElementById("diseaseResult").style.display = "none";
+        document.getElementById("diseaseError").style.display = "none";
+        document.getElementById("diseaseCommon").style.display = "none";
+        document.getElementById("imgChatPanel").style.display = "none";
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+          const res = await fetch("http://localhost:5000/api/disease", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await res.json();
+          document.getElementById("diseaseLoading").style.display = "none";
+
+          // Backend returned not_plant (confidence too low / not a leaf)
+          if (res.status === 422 || data.error === "not_plant") {
+            showNotLeafError();
+            return;
+          }
+
+          // Any other server error — show error message
+          if (data.error) {
+            const errEl = document.getElementById("diseaseError");
+            errEl.style.display = "block";
+            errEl.innerHTML = `⚠️ Server error: ${data.error}`;
+            return;
+          }
+
+          // ✅ Success — backend sends all fields now
+          displayDiseaseResult(
+            data.label,
+            data.description || "",
+            data.urdu || "",
+            data.treatment || "",
+            data.treatment_urdu || "",
+            data.severity || "Medium",
+            data.confidence || null,
+          );
+        } catch (e) {
+          document.getElementById("diseaseLoading").style.display = "none";
+          // Backend offline — show error
+          const errEl = document.getElementById("diseaseError");
+          errEl.style.display = "block";
+          errEl.innerHTML = `⚠️ Could not connect to backend. Make sure <code>python backend/app.py</code> is running on port 5000.
+      <br><span style="font-family:var(--urdu);direction:rtl;display:block;margin-top:6px;">بیک اینڈ سرور چلائیں۔</span>`;
+        }
+      }
+
+      function showNotLeafError() {
+        document.getElementById("diseaseResult").style.display = "none";
+        const errEl = document.getElementById("diseaseError");
+        errEl.style.display = "block";
+        errEl.innerHTML = `
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <span style="font-size:2rem;flex-shrink:0">🌿</span>
+      <div>
+        <div style="font-weight:700;font-size:.95rem;margin-bottom:6px">Can't detect leaf or plant in this image</div>
+        <div style="font-size:.83rem;line-height:1.7;margin-bottom:8px">Please upload a clear photo of a crop leaf or plant to detect disease. Make sure the plant fills most of the frame.</div>
+        <div style="font-family:var(--urdu);direction:rtl;font-size:.9rem;line-height:2.2;color:#922b21;">پودے یا پتے کی واضح تصویر لگائیں۔ غیر متعلقہ تصویر پہچانی نہیں جا سکتی۔</div>
+      </div>
+    </div>`;
+      }
+
+      // Stores current disease context for the image chat
+      let _currentDiseaseLabel = "";
+      let _imgChatHistory = [];
+
+      function displayDiseaseResult(
+        label,
+        description,
+        urdu,
+        treatment,
+        treatmentUrdu,
+        severity,
+        confidence,
+      ) {
+        const isHealthy = label && label.toLowerCase().includes("healthy");
+
+        // Badge
+        const badge = document.getElementById("diseaseBadge");
+        badge.className = "d-badge " + (isHealthy ? "healthy" : "disease");
+        badge.innerHTML =
+          (isHealthy ? "✅" : "🦠") +
+          " " +
+          (isHealthy ? "Healthy Plant" : "Disease Detected");
+
+        document.getElementById("diseaseLabel").textContent = label;
+        document.getElementById("diseaseLabelUrdu").textContent = urdu || "";
+
+        // Confidence
+        const confEl = document.getElementById("diseaseConfidence");
+        if (confidence) {
+          confEl.textContent = `AI: ${confidence}% sure`;
+          confEl.style.display = "inline-block";
+        }
+
+        // Severity bar
+        const sevMap = { None: "0%", Low: "30%", Medium: "65%", High: "100%" };
+        const sevColor = {
+          None: "#16a34a",
+          Low: "#16a34a",
+          Medium: "#d97706",
+          High: "#dc2626",
+        };
+        const sev = severity || (isHealthy ? "None" : "Medium");
+        document.getElementById("diseaseSeverityFill").style.width =
+          sevMap[sev] || "60%";
+        document.getElementById("diseaseSeverityFill").style.background =
+          sevColor[sev] || "#d97706";
+        document.getElementById("diseaseSeverityLabel").textContent = isHealthy
+          ? "No Disease ✓"
+          : sev + " Severity";
+
+        // Description placeholder
+        document.getElementById("diseaseDesc").textContent =
+          description ||
+          (isHealthy
+            ? "Plant looks healthy. No disease detected."
+            : "Analysing...");
+        document.getElementById("diseaseSteps").innerHTML =
+          '<div style="color:var(--tl);font-size:.82rem;padding:4px 0">⏳ Loading steps...</div>';
+        document.getElementById("diseaseChemicals").innerHTML =
+          '<div style="color:var(--tl);font-size:.82rem">⏳ Loading...</div>';
+        document.getElementById("diseaseChemicalsBox").style.display = isHealthy
+          ? "none"
+          : "block";
+
+        // Image chat reset
+        _currentDiseaseLabel = label;
+        _imgChatHistory = [];
+        document.getElementById("imgChatPanel").style.display = "block";
+        document.getElementById("imgChatMsgs").innerHTML =
+          `<div style="font-size:.74rem;color:var(--tl);text-align:center;padding:8px 12px;background:var(--gxp);border-radius:8px">🌿 کچھ بھی پوچھیں اس پودے کے بارے میں</div>`;
+
+        document.getElementById("diseaseResult").style.display = "block";
+
+        if (isHealthy) {
+          renderSteps([
+            {
+              en: "Keep watering regularly and monitor weekly for pests",
+              ur: "باقاعدہ پانی دیں اور ہفتہ وار کیڑوں کی جانچ کریں",
+            },
+            {
+              en: "Apply balanced fertilizer on schedule",
+              ur: "وقت پر متوازن کھاد ڈالیں",
+            },
+          ]);
+        } else {
+          getAIDetailedAnalysis(label, urdu, treatment, treatmentUrdu);
+        }
+      }
+
+      function renderSteps(steps) {
+        document.getElementById("diseaseSteps").innerHTML = steps
+          .map(
+            (s, i) => `
+    <div class="d-step">
+      <div class="d-step-num">${i + 1}</div>
+      <div style="flex:1">
+        <div style="font-size:.84rem;color:#374151;line-height:1.6;margin-bottom:2px">${s.en}</div>
+        <div class="d-step-text">${s.ur}</div>
+      </div>
+    </div>`,
+          )
+          .join("");
+      }
+
+      function renderChemicals(items) {
+        document.getElementById("diseaseChemicals").innerHTML = items
+          .map(
+            (c) => `
+    <div class="chem-item">
+      <div class="chem-dot"></div>
+      <div>
+        <div class="chem-en">${c.en}</div>
+        <div class="chem-ur">${c.ur}</div>
+      </div>
+    </div>`,
+          )
+          .join("");
+      }
+
+      async function getAIDetailedAnalysis(
+        label,
+        urdu,
+        treatment,
+        treatmentUrdu,
+      ) {
+        if (!HF_TOKEN || HF_TOKEN === "YOUR_HF_TOKEN_HERE") {
+          showSimpleFallback(treatment, treatmentUrdu);
+          return;
+        }
+
+        const prompt = `A plant disease was detected: "${label}". Help Pakistani farmers understand it.
+Respond ONLY with valid JSON, no markdown:
+{
+  "steps": [{"en":"simple English step","ur":"آسان اردو قدم"},{"en":"step 2","ur":"قدم 2"}],
+  "chemicals": [{"en":"ChemicalName: dose and usage","ur":"دوائی نام: خوراک اور طریقہ"}],
+  "detail_en": "1-2 sentences about this disease",
+  "detail_ur": "1-2 جملے اردو میں"
+}
+Rules: exactly 3 steps, exactly 2 chemicals, very simple words a village farmer understands.`;
+
+        try {
+          const res = await fetch(HF_API, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${HF_TOKEN}`,
+            },
+            body: JSON.stringify({
+              model: HF_MODEL,
+              messages: [{ role: "user", content: prompt }],
+              max_tokens: 600,
+              temperature: 0.3,
+              stream: false,
+            }),
+          });
+          const data = await res.json();
+          let raw = (data.choices?.[0]?.message?.content || "")
+            .replace(/```json|```/g, "")
+            .trim();
+          const parsed = JSON.parse(raw);
+
+          // Description — English + Urdu
+          document.getElementById("diseaseDesc").innerHTML =
+            `<span>${parsed.detail_en || treatment}</span>` +
+            (parsed.detail_ur
+              ? `<span class="urdu-part">${parsed.detail_ur}</span>`
+              : "");
+
+          // Steps — English + Urdu each step
+          if (parsed.steps?.length) renderSteps(parsed.steps);
+          else showSimpleFallback(treatment, treatmentUrdu);
+
+          // Chemicals
+          if (parsed.chemicals?.length) renderChemicals(parsed.chemicals);
+          else
+            document.getElementById("diseaseChemicals").textContent =
+              "Consult local agriculture store.";
+        } catch (e) {
+          console.error("AI analysis error:", e);
+          showSimpleFallback(treatment, treatmentUrdu);
+        }
+      }
+
+      function showSimpleFallback(treatment, treatmentUrdu) {
+        renderSteps([
+          {
+            en:
+              treatment ||
+              "Remove affected leaves and dispose them away from field.",
+            ur: treatmentUrdu || "متاثرہ پتے توڑ کر کھیت سے دور پھینک دیں۔",
+          },
+          {
+            en: "Apply recommended fungicide spray in the morning.",
+            ur: "صبح سویرے تجویز کردہ دوائی کا سپرے کریں۔",
+          },
+          {
+            en: "Consult your local agriculture officer for further guidance.",
+            ur: "مزید رہنمائی کے لیے مقامی زراعت افسر سے ملیں۔",
+          },
+        ]);
+        document.getElementById("diseaseChemicals").innerHTML = `
+    <div class="chem-item"><div class="chem-dot"></div><div><div class="chem-en">Mancozeb 75WP: 2g per litre of water, spray every 7 days</div><div class="chem-ur">مانکوزیب: 2 گرام فی لیٹر پانی، ہر 7 دن بعد سپرے</div></div></div>
+    <div class="chem-item"><div class="chem-dot"></div><div><div class="chem-en">Copper Oxychloride: 3g per litre, spray on affected areas</div><div class="chem-ur">کاپر آکسی کلورائیڈ: 3 گرام فی لیٹر، متاثرہ جگہ پر سپرے</div></div></div>`;
+      }
+
+      /* ═══ IMAGE CHAT ═══ */
+      function imgChatKey(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendImgChat();
+        }
+      }
+
+      /* ── Image Chat Voice Input ── */
+      let imgRecognition = null;
+      let imgIsRecording = false;
+
+      function toggleImgVoice() {
+        if (imgIsRecording) {
+          imgIsRecording = false;
+          if (imgRecognition) imgRecognition.stop();
+          return;
+        }
+
+        const SpeechRecognition =
+          window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          alert(
+            "آپ کا browser voice input support نہیں کرتا۔\nPlease use Chrome or Edge.",
+          );
+          return;
+        }
+
+        imgRecognition = new SpeechRecognition();
+        imgRecognition.lang = "ur-PK";
+        imgRecognition.continuous = false;
+        imgRecognition.interimResults = true;
+
+        const btn = document.getElementById("imgMicBtn");
+        const inp = document.getElementById("imgChatInp");
+
+        imgRecognition.onstart = () => {
+          imgIsRecording = true;
+          btn.classList.add("recording");
+          inp.placeholder = "سن رہا ہوں...";
+        };
+
+        imgRecognition.onresult = (e) => {
+          const transcript = Array.from(e.results)
+            .map((r) => r[0].transcript)
+            .join("");
+          inp.value = transcript;
+          resize(inp);
+        };
+
+        imgRecognition.onend = () => {
+          imgIsRecording = false;
+          btn.classList.remove("recording");
+          inp.placeholder = "مثلاً: یہ کتنی خطرناک ہے؟ / Will it spread?";
+          if (inp.value.trim()) sendImgChat();
+        };
+
+        imgRecognition.onerror = (e) => {
+          imgIsRecording = false;
+          btn.classList.remove("recording");
+          inp.placeholder = "مثلاً: یہ کتنی خطرناک ہے؟ / Will it spread?";
+          if (e.error !== "no-speech") alert("Voice error: " + e.error);
+        };
+
+        imgRecognition.start();
+      }
+
+      async function sendImgChat() {
+        const inp = document.getElementById("imgChatInp");
+        const msg = inp.value.trim();
+        if (!msg) return;
+        inp.value = "";
+        resize(inp);
+
+        const msgsBox = document.getElementById("imgChatMsgs");
+
+        // Add user message
+        const uDiv = document.createElement("div");
+        uDiv.style.cssText = "display:flex;justify-content:flex-end;";
+        uDiv.innerHTML = `<div style="background:linear-gradient(135deg,var(--gm),var(--gd));color:#fff;padding:9px 14px;border-radius:14px 4px 14px 14px;font-size:.83rem;max-width:85%;line-height:1.6">${msg.replace(/</g, "&lt;")}</div>`;
+        msgsBox.appendChild(uDiv);
+
+        // Typing indicator
+        const tyDiv = document.createElement("div");
+        tyDiv.style.cssText = "display:flex;gap:8px;align-items:flex-start";
+        tyDiv.innerHTML = `<div style="width:28px;height:28px;background:linear-gradient(135deg,var(--gm),var(--gd));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🌿</div><div style="background:var(--cream);border:1px solid rgba(82,183,136,.15);border-radius:4px 12px 12px 12px;padding:10px 14px"><div class="typbub"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+        msgsBox.appendChild(tyDiv);
+        msgsBox.scrollTop = msgsBox.scrollHeight;
+
+        if (!HF_TOKEN || HF_TOKEN === "YOUR_HF_TOKEN_HERE") {
+          tyDiv.remove();
+          appendImgChatReply(
+            msgsBox,
+            "Please add your HuggingFace token to use AI chat.",
+            "AI token ڈالیں۔",
+          );
+          return;
+        }
+
+        const systemMsg = `You are Kisan Sathi AI helping a Pakistani farmer about their plant photo.
+The disease detection system identified: "${_currentDiseaseLabel}" on this plant.
+Answer the farmer's questions about this specific disease/plant in simple language.
+Reply format — two parts separated by ---:
+Part 1: Answer in the language the user wrote in (Urdu/English/Roman Urdu)
+Part 2: Urdu translation (if Part 1 was not already in Urdu)
+Keep answers short, practical, and use words a village farmer understands.`;
+
+        _imgChatHistory.push({ role: "user", content: msg });
+
+        try {
+          const res = await fetch(HF_API, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${HF_TOKEN}`,
+            },
+            body: JSON.stringify({
+              model: HF_MODEL,
+              messages: [
+                { role: "system", content: systemMsg },
+                ..._imgChatHistory,
+              ],
+              max_tokens: 500,
+              temperature: 0.5,
+              stream: false,
+            }),
+          });
+          const data = await res.json();
+          const raw =
+            data.choices?.[0]?.message?.content ||
+            "Sorry, could not get answer.";
+          const parts = raw.split("---");
+          const en = parts[0]?.trim() || raw;
+          const ur = parts[1]?.trim() || "";
+
+          _imgChatHistory.push({ role: "assistant", content: raw });
+          if (_imgChatHistory.length > 10)
+            _imgChatHistory = _imgChatHistory.slice(-10);
+
+          tyDiv.remove();
+          appendImgChatReply(msgsBox, en, ur);
+        } catch (e) {
+          tyDiv.remove();
+          appendImgChatReply(
+            msgsBox,
+            "Connection error. Please try again.",
+            "دوبارہ کوشش کریں۔",
+          );
+        }
+      }
+
+      function appendImgChatReply(box, en, ur) {
+        const d = document.createElement("div");
+        d.style.cssText = "display:flex;gap:8px;align-items:flex-start";
+        d.innerHTML = `
+    <div style="width:28px;height:28px;background:linear-gradient(135deg,var(--gm),var(--gd));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🌿</div>
+    <div style="background:var(--cream);border:1px solid rgba(82,183,136,.15);border-radius:4px 12px 12px 12px;padding:10px 14px;font-size:.83rem;color:var(--tm);line-height:1.65;max-width:88%">
+      ${en.replace(/\n/g, "<br>")}
+      ${ur ? `<div style="font-family:var(--urdu);direction:rtl;font-size:.82rem;color:var(--tl);line-height:2.2;margin-top:6px;padding-top:6px;border-top:1px solid rgba(82,183,136,.1)">${ur.replace(/\n/g, "<br>")}</div>` : ""}
+    </div>`;
+        box.appendChild(d);
+        box.scrollTop = box.scrollHeight;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const ua = document.getElementById("uploadArea");
+        if (ua) {
+          ua.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            ua.classList.add("drag");
+          });
+          ua.addEventListener("dragleave", () => ua.classList.remove("drag"));
+          ua.addEventListener("drop", (e) => {
+            e.preventDefault();
+            ua.classList.remove("drag");
+            const f = e.dataTransfer.files[0];
+            if (f) {
+              document.getElementById("diseaseInput").files =
+                e.dataTransfer.files;
+              previewAndDetect({ target: { files: [f] } });
+            }
+          });
+          ua.addEventListener("click", () => {
+            document.getElementById("diseaseInput").click();
+          });
+        }
+      });
+
+      const HF_TOKEN = "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";
+      const HF_MODEL = "Qwen/Qwen2.5-72B-Instruct";
+      const HF_API = "https://router.huggingface.co/v1/chat/completions";
+
+      const SYSTEM_PROMPT = `You are Kisan Sathi (کسان ساتھی), a warm and knowledgeable agricultural AI assistant for farmers in Pakistan and South Asia.
+
+You must understand and reply to messages in:
+- English
+- Urdu (اردو)  
+- Roman Urdu (e.g. "gandum ki buwai kab karen?")
+- Roman English or mixed language queries
+
+You specialize in:
+- Crops: wheat (گندم/gandum), rice (چاول/chawal), cotton (کپاس/kapas), sugarcane (گنا/ganna), maize (مکئی/makai), vegetables, pulses
+- Soil health, pH, fertilizers, organic matter
+- Irrigation scheduling and water management
+- Pest & disease control using IPM
+- Seasonal farming calendar (Rabi/Kharif)
+- Local fertilizers: DAP, Urea, SOP, FYM
+- If a question is NOT related to agriculture or agricultural education, politely refuse and say:
+  "I am specialized in agricultural guidance. Please ask me about farming, crops, soil, water, pests, or diseases."
+- Do NOT answer general knowledge, entertainment, personal, political, or unrelated technical questions.
+
+
+REPLY FORMAT — always reply in TWO sections separated by exactly "---":
+Section 1: Answer in the SAME language the user wrote in (if English → English, if Urdu → Urdu, if Roman Urdu → Roman Urdu)
+Section 2: Translation in Urdu script (اردو میں ترجمہ)
+
+Keep answers practical, specific, and 3-6 sentences. Use friendly tone. Avoid overly technical jargon.`;
+
+      
+      const KB = {
+        wheat:
+          "Wheat (گندم) sow October–November. Needs 6 irrigations. Apply DAP at sowing, urea in 2 splits. Control rust with Propiconazole.",
+        rice: "Rice (چاول) needs 1200–2000mm water. Transplant at 25–30 days. 80–100 kg N/ha. Watch for blast disease.",
+        cotton:
+          "Cotton (کپاس) sow April–June. Use Bt varieties for bollworm. Control leaf curl by managing whitefly with Imidacloprid.",
+        maize:
+          "Maize (مکئی) sow April–May with hybrid seed. Urea in 2 splits. Irrigate at silking. Harvest when husk turns brown.",
+        soil: "Test soil pH before planting. Add compost to improve organic matter. pH 6–7 is ideal. Improve drainage for waterlogged soils.",
+        water:
+          "Irrigate early morning or evening. Drip irrigation saves 40% water. Water based on crop stage, not fixed schedule.",
+        fertilizer:
+          "Apply DAP at sowing for phosphorus. Urea for nitrogen in 2–3 splits. Over-fertilizing causes lodging and disease.",
+        pest: "Use Integrated Pest Management. Neem oil for natural control. Apply pesticides early morning/evening. Follow label dosage.",
+      };
+
+      function sendQ(t) {
+        g("cInp").value = t;
+        sendMsg();
+      }
+
+      async function sendMsg() {
+        const inp = g("cInp");
+        const msg = inp.value.trim();
+        if (!msg) return;
+        addMsg(msg, "user");
+        inp.value = "";
+        inp.style.height = "";
+
+        const ty = addTyping();
+
+        if (!HF_TOKEN || HF_TOKEN === "YOUR_HF_TOKEN_HERE") {
+          await new Promise((r) => setTimeout(r, 900));
+          ty.remove();
+          localReply(msg);
+          return;
+        }
+
+        try {
+          const res = await fetch(HF_API, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${HF_TOKEN}`,
+            },
+            body: JSON.stringify({
+              model: HF_MODEL,
+              messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                { role: "user", content: msg },
+              ],
+              max_tokens: 700,
+              temperature: 0.6,
+              stream: false,
+            }),
+          });
+
+          const data = await res.json();
+          ty.remove();
+
+          if (data.error) {
+            console.error("HF API error:", data.error);
+            localReply(msg);
+            return;
+          }
+
+          const raw = data.choices?.[0]?.message?.content || "";
+          const parts = raw.split("---");
+          const en = parts[0]?.trim() || raw;
+          const ur = parts[1]?.trim() || "";
+          addAiMsg(en, ur);
+        } catch (err) {
+          console.error("HF fetch error:", err);
+          ty.remove();
+          localReply(msg);
+        }
+      }
+
+      function localReply(msg) {
+        const lo = msg.toLowerCase();
+        let en, ur;
+
+        if (
+          lo.includes("wheat") ||
+          lo.includes("gandum") ||
+          lo.includes("گندم")
+        ) {
+          en = KB.wheat;
+          ur =
+            "گندم اکتوبر-نومبر میں بوئیں۔ 6 آبپاشی کریں۔ DAP بوائی پر، یوریا دو حصوں میں ڈالیں۔ زنگ بیماری کنٹرول کریں۔";
+        } else if (
+          lo.includes("rice") ||
+          lo.includes("chawal") ||
+          lo.includes("چاول")
+        ) {
+          en = KB.rice;
+          ur =
+            "چاول میں 1200-2000mm پانی چاہیے۔ 25-30 دن بعد پیوند کاری کریں۔ جھلسا بیماری سے بچائیں۔";
+        } else if (
+          lo.includes("cotton") ||
+          lo.includes("kapas") ||
+          lo.includes("کپاس")
+        ) {
+          en = KB.cotton;
+          ur =
+            "کپاس اپریل-جون میں بوئیں۔ بی ٹی اقسام سنڈی سے بچاتی ہیں۔ سفید مکھی کنٹرول کریں۔";
+        } else if (
+          lo.includes("maize") ||
+          lo.includes("makai") ||
+          lo.includes("makki") ||
+          lo.includes("مکئی")
+        ) {
+          en = KB.maize;
+          ur =
+            "مکئی اپریل-مئی میں بوئیں۔ ہائبرڈ بیج استعمال کریں۔ یوریا دو حصوں میں، پھول آنے پر آبپاشی ضروری ہے۔";
+        } else if (
+          lo.includes("soil") ||
+          lo.includes("mitti") ||
+          lo.includes("مٹی")
+        ) {
+          en = KB.soil;
+          ur =
+            "بوائی سے پہلے مٹی ٹیسٹ کریں۔ کمپوسٹ سے نامیاتی مادہ بڑھائیں۔ pH 6-7 مثالی ہے۔";
+        } else if (
+          lo.includes("water") ||
+          lo.includes("pani") ||
+          lo.includes("aabpashi") ||
+          lo.includes("پانی") ||
+          lo.includes("آبپاشی")
+        ) {
+          en = KB.water;
+          ur =
+            "صبح یا شام آبپاشی کریں۔ ڈرپ آبپاشی سے 40% پانی بچتا ہے۔ فصل کے مرحلے کے مطابق پانی دیں۔";
+        } else if (
+          lo.includes("fertilizer") ||
+          lo.includes("khad") ||
+          lo.includes("urea") ||
+          lo.includes("کھاد") ||
+          lo.includes("یوریا")
+        ) {
+          en = KB.fertilizer;
+          ur =
+            "DAP بوائی پر، یوریا 2-3 حصوں میں ڈالیں۔ زیادہ کھاد سے فصل گرتی ہے اور بیماری آتی ہے۔";
+        } else if (
+          lo.includes("pest") ||
+          lo.includes("keeda") ||
+          lo.includes("kirha") ||
+          lo.includes("کیڑ") ||
+          lo.includes("سنڈی")
+        ) {
+          en = KB.pest;
+          ur =
+            "مربوط کیڑا انتظام (IPM) استعمال کریں۔ نیم آئل قدرتی طریقہ ہے۔ صبح یا شام سپرے کریں۔";
+        } else {
+          en =
+            "Add your free HuggingFace token above (HF_TOKEN) for full AI answers in Urdu, English and Roman Urdu. Get it free at huggingface.co → Settings → Tokens. I can answer about wheat, rice, cotton, soil, water, fertilizers, and pests.";
+          ur =
+            "مکمل AI جوابات کے لیے اپنا HuggingFace token ڈالیں۔ یہ بالکل مفت ہے — huggingface.co پر اکاؤنٹ بنائیں اور Settings → Tokens سے token لیں۔";
+        }
+        addAiMsg(en, ur);
+      }
+      function addMsg(txt, who) {
+        const box = g("chatBox");
+        const d = document.createElement("div");
+        d.className = `msg ${who}`;
+        d.innerHTML = `<div class="mav ${who === "ai" ? "aiav" : "userav"}">${who === "ai" ? "🌿" : "👤"}</div><div class="mbub">${txt.replace(/</g, "&lt;").replace(/\n/g, "<br>")}</div>`;
+        box.appendChild(d);
+        box.scrollTop = box.scrollHeight;
+      }
+
+      function addAiMsg(en, ur) {
+        const box = g("chatBox");
+        const d = document.createElement("div");
+        d.className = "msg ai";
+
+        const msgId = "msg_" + Date.now();
+
+        d.innerHTML = `
+    <div class="mav aiav">🌿</div>
+    <div class="mbub">
+      ${en.replace(/\n/g, "<br>")}
+      ${ur ? `<div class="murdu">${ur.replace(/\n/g, "<br>")}</div>` : ""}
+      <div>
+        <button class="speakbtn" id="${msgId}" onclick="speakMsg(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          سنیں
+        </button>
+      </div>
+    </div>`;
+
+        box.appendChild(d);
+        const btn = document.getElementById(msgId);
+        btn._enText = en;
+        btn._urText = ur || "";
+
+        box.scrollTop = box.scrollHeight;
+      }
+
+      /* ═══ TEXT-TO-SPEECH ═══ */
+      let currentSpeakBtn = null;
+      let currentAudio = null;
+
+      function speakMsg(btn) {
+        
+        if (btn.classList.contains("speaking")) {
+          stopCurrentAudio();
+          resetSpeakBtn(btn);
+          return;
+        }
+
+        if (currentSpeakBtn) {
+          stopCurrentAudio();
+          resetSpeakBtn(currentSpeakBtn);
+        }
+
+        const enText = btn._enText || "";
+        const urText = btn._urText || "";
+        if (!enText && !urText) return;
+
+        btn.classList.add("speaking");
+        btn.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <rect x="2" y="7" width="3" height="10" rx="1"/>
+      <rect x="7" y="4" width="3" height="16" rx="1"/>
+      <rect x="12" y="7" width="3" height="10" rx="1"/>
+      <rect x="17" y="4" width="3" height="16" rx="1"/>
+    </svg>
+    رکیں`;
+        currentSpeakBtn = btn;
+        if (enText) {
+          const enUtt = new SpeechSynthesisUtterance(enText);
+          enUtt.lang = "en-US";
+          enUtt.rate = 0.92;
+          enUtt.volume = 1;
+          enUtt.onend = () => {
+            if (urText) playUrduGoogleTTS(urText, btn);
+            else resetSpeakBtn(btn);
+          };
+          enUtt.onerror = () => {
+            if (urText) playUrduGoogleTTS(urText, btn);
+            else resetSpeakBtn(btn);
+          };
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(enUtt);
+        } else if (urText) {
+          playUrduGoogleTTS(urText, btn);
+        }
+      }
+
+      function playUrduGoogleTTS(text, btn) {
+        
+        const chunks = splitText(text, 180); 
+        playChunks(chunks, 0, btn);
+      }
+
+      function splitText(text, maxLen) {
+        const chunks = [];
+        while (text.length > maxLen) {
+          let cut = text.lastIndexOf("،", maxLen);
+          if (cut < 50) cut = text.lastIndexOf(" ", maxLen);
+          if (cut < 50) cut = maxLen;
+          chunks.push(text.slice(0, cut).trim());
+          text = text.slice(cut).trim();
+        }
+        if (text) chunks.push(text);
+        return chunks;
+      }
+
+      function playChunks(chunks, idx, btn) {
+        if (idx >= chunks.length) {
+          resetSpeakBtn(btn);
+          return;
+        }
+        if (!btn.classList.contains("speaking")) return;
+
+        const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ur&client=tw-ob&q=${encodeURIComponent(chunks[idx])}`;
+        const audio = new Audio(url);
+        currentAudio = audio;
+        audio.onended = () => playChunks(chunks, idx + 1, btn);
+        audio.onerror = () => {
+          const utt = new SpeechSynthesisUtterance(chunks[idx]);
+          utt.lang = "ur-PK";
+          utt.rate = 0.82;
+          utt.onend = () => playChunks(chunks, idx + 1, btn);
+          utt.onerror = () => resetSpeakBtn(btn);
+          window.speechSynthesis.speak(utt);
+        };
+        audio.play().catch(() => {
+          const utt = new SpeechSynthesisUtterance(chunks[idx]);
+          utt.lang = "ur-PK";
+          utt.rate = 0.82;
+          utt.onend = () => playChunks(chunks, idx + 1, btn);
+          utt.onerror = () => resetSpeakBtn(btn);
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(utt);
+        });
+      }
+
+      function stopCurrentAudio() {
+        window.speechSynthesis.cancel();
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.src = "";
+          currentAudio = null;
+        }
+      }
+
+      function resetSpeakBtn(btn) {
+        if (!btn) return;
+        btn.classList.remove("speaking");
+        btn.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+    سنیں`;
+        currentSpeakBtn = null;
+        currentAudio = null;
+      }
+
+      /* ═══ VOICE INPUT (Speech-to-Text) */
+      let recognition = null;
+      let isRecording = false;
+
+      function toggleVoice() {
+        if (isRecording) {
+          stopVoice();
+        } else {
+          startVoice();
+        }
+      }
+
+      function startVoice() {
+        const SpeechRecognition =
+          window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          alert(
+            "آپ کا browser voice input support نہیں کرتا۔\nPlease use Chrome or Edge.",
+          );
+          return;
+        }
+
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = "ur-PK"; // primary — Urdu
+        recognition.maxAlternatives = 1;
+
+        const inp = g("cInp");
+        const micBtn = g("micBtn");
+        const recTxt = g("recTxt");
+        let finalTranscript = "";
+
+        recognition.onstart = () => {
+          isRecording = true;
+          micBtn.classList.add("recording");
+          recTxt.textContent = " سن رہا ہوں...";
+          inp.placeholder = "بولیں... | Speak now...";
+        };
+
+        recognition.onresult = (e) => {
+          let interim = "";
+          for (let i = e.resultIndex; i < e.results.length; i++) {
+            if (e.results[i].isFinal) {
+              finalTranscript += e.results[i][0].transcript;
+            } else {
+              interim = e.results[i][0].transcript;
+            }
+          }
+          inp.value = finalTranscript || interim;
+          resize(inp);
+        };
+
+        recognition.onend = () => {
+          stopVoice();
+          // Auto-send if we got something
+          if (inp.value.trim()) {
+            setTimeout(() => sendMsg(), 300);
+          }
+        };
+
+        recognition.onerror = (e) => {
+          console.error("Voice error:", e.error);
+          stopVoice();
+          if (e.error === "not-allowed") {
+            recTxt.textContent = "❌ Mic blocked";
+            setTimeout(() => {
+              recTxt.textContent = "";
+            }, 3000);
+          } else if (e.error === "no-speech") {
+            recTxt.textContent = "⚠️ آواز نہیں آئی";
+            setTimeout(() => {
+              recTxt.textContent = "";
+            }, 2000);
+          }
+        };
+
+        recognition.start();
+      }
+
+      function stopVoice() {
+        isRecording = false;
+        const micBtn = g("micBtn");
+        const recTxt = g("recTxt");
+        const inp = g("cInp");
+        micBtn.classList.remove("recording");
+        recTxt.textContent = "";
+        inp.placeholder = "Type your question... | اپنا سوال لکھیں";
+        if (recognition) {
+          try {
+            recognition.stop();
+          } catch (e) {}
+          recognition = null;
+        }
+      }
+      function addTyping() {
+        const box = g("chatBox");
+        const d = document.createElement("div");
+        d.className = "msg ai";
+        d.innerHTML = `<div class="mav aiav">🌿</div><div class="mbub" style="padding:0"><div class="typbub"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+        box.appendChild(d);
+        box.scrollTop = box.scrollHeight;
+        return d;
+      }
+      function onKey(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMsg();
+        }
+      }
+      function resize(el) {
+        el.style.height = "";
+        el.style.height = Math.min(el.scrollHeight, 130) + "px";
+      }
+
+      /* ═══ UTILS ════ */
+      function g(id) {
+        return document.getElementById(id);
+      }
+      function show2(id) {
+        const el = g(id);
+        if (el) el.classList.remove("dn");
+      }
+      function hide(id) {
+        const el = g(id);
+        if (el) el.classList.add("dn");
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadWx("Lahore", document.querySelector(".chip"));
+      });
+    </script>
+  </body>
+</html>

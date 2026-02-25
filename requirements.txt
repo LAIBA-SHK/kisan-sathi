@@ -1,0 +1,9 @@
+gunicorn
+requests
+flask
+joblib
+pandas
+numpy
+torch
+torchvision
+Pillow
