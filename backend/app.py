@@ -383,10 +383,26 @@ def chat():
 
 @app.after_request
 def add_cors(response):
-    response.headers['Access-Control-Allow-Origin']  = '*'
+    response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     return response
+
+@app.route('/api/disease', methods=['OPTIONS'])
+def disease_options():
+    return '', 204
+
+@app.route('/api/recommend', methods=['OPTIONS'])
+def recommend_options():
+    return '', 204
+
+@app.route('/api/chat', methods=['OPTIONS'])
+def chat_options():
+    return '', 204
+
+@app.route('/api/weather', methods=['OPTIONS'])
+def weather_options():
+    return '', 204
 
 if __name__ == "__main__":
     print('\n🌿 Kisan Sathi Backend Starting...')
