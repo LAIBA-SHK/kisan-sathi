@@ -3167,7 +3167,7 @@
           rainfall: +g("rain").value,
         };
         try {
-          const r = await fetch("/api/recommend", {
+          const r = await fetch("https://kisan-sathi-production.up.railway.app/api/recommend", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(p),
@@ -3231,8 +3231,7 @@
         show2("wxL");
         hide("wxC");
         try {
-          const r = await fetch(
-            `/api/weather?city=${city}`,
+          const r = await fetch(`https://kisan-sathi-production.up.railway.app/api/weather?city=${city}`,
           );
           const d = await r.json();
           hide("wxL");
@@ -3369,7 +3368,7 @@
         formData.append("image", file);
 
         try {
-          const res = await fetch("/api/disease", {
+          const res = await fetch("https://kisan-sathi-production.up.railway.app/api/disease", {
             method: "POST",
             body: formData,
           });
@@ -3814,7 +3813,7 @@ Keep answers short, practical, and use words a village farmer understands.`;
 
       const HF_TOKEN = "";
       const HF_MODEL = "Qwen/Qwen2.5-72B-Instruct";
-      const HF_API = "/api/chat";
+      const HF_API = "https://kisan-sathi-production.up.railway.app/api/chat";
 
       const SYSTEM_PROMPT = `You are Kisan Sathi (کسان ساتھی), a warm and knowledgeable agricultural AI assistant for farmers in Pakistan and South Asia.
 
