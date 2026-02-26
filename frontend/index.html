@@ -3716,15 +3716,15 @@ Rules: exactly 3 steps, exactly 2 chemicals, very simple words a village farmer 
         msgsBox.appendChild(tyDiv);
         msgsBox.scrollTop = msgsBox.scrollHeight;
 
-        if (!HF_TOKEN || HF_TOKEN === "YOUR_HF_TOKEN_HERE") {
-          tyDiv.remove();
-          appendImgChatReply(
-            msgsBox,
-            "Please add your HuggingFace token to use AI chat.",
-            "AI token ڈالیں۔",
-          );
-          return;
-        }
+        // if (!HF_TOKEN || HF_TOKEN === "YOUR_HF_TOKEN_HERE") {
+        //   tyDiv.remove();
+        //   appendImgChatReply(
+        //     msgsBox,
+        //     "Please add your HuggingFace token to use AI chat.",
+        //     "AI token ڈالیں۔",
+        //   );
+        //   return;
+        // }
 
         const systemMsg = `You are Kisan Sathi AI helping a Pakistani farmer about their plant photo.
 The disease detection system identified: "${_currentDiseaseLabel}" on this plant.
@@ -3874,12 +3874,12 @@ Keep answers practical, specific, and 3-6 sentences. Use friendly tone. Avoid ov
 
         const ty = addTyping();
 
-        if (!HF_TOKEN || HF_TOKEN === "YOUR_HF_TOKEN_HERE") {
-          await new Promise((r) => setTimeout(r, 900));
-          ty.remove();
-          localReply(msg);
-          return;
-        }
+        // if (!HF_TOKEN || HF_TOKEN === "YOUR_HF_TOKEN_HERE") {
+        //   await new Promise((r) => setTimeout(r, 900));
+        //   ty.remove();
+        //   localReply(msg);
+        //   return;
+        // }
 
         try {
           const res = await fetch(HF_API, {
