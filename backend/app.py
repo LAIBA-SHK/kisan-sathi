@@ -18,30 +18,26 @@ import torch.nn as nn
 
 app = Flask(__name__)
 
-# ═══════════════════════════════════════════════
-# CROP RECOMMENDATION MODEL
-# ═══════════════════════════════════════════════
-
 def load_crop_model():
     base = os.path.dirname(__file__)
     model_path   = os.path.join(base, '../data_ml/models/crop_recommendation/crop_recommendation_model.pkl')
     encoder_path = os.path.join(base, '../data_ml/models/crop_recommendation/label_encoder.pkl')
 
     if not os.path.exists(model_path):
-        print(f'❌ Crop model NOT found: {model_path}')
+        print(f'Crop model NOT found: {model_path}')
         return None, None
     if not os.path.exists(encoder_path):
-        print(f'❌ Label encoder NOT found: {encoder_path}')
+        print(f'Label encoder NOT found: {encoder_path}')
         return None, None
 
     try:
         crop_model   = joblib.load(model_path)
         label_encoder = joblib.load(encoder_path)
-        print(f'✅ Crop model loaded successfully')
-        print(f'✅ Crops supported: {list(label_encoder.classes_)}')
+        print(f'Crop model loaded successfully')
+        print(f'Crops supported: {list(label_encoder.classes_)}')
         return crop_model, label_encoder
     except Exception:
-        print(f'❌ Crop model load failed:\n{traceback.format_exc()}')
+        print(f'Crop model load failed:\n{traceback.format_exc()}')
         return None, None
 
 crop_model, label_encoder = load_crop_model()
@@ -98,7 +94,7 @@ def recommend():
         return jsonify({'error': 'Invalid JSON or missing Content-Type'}), 400
 
     if crop_model is None or label_encoder is None:
-        print('❌ Crop model not loaded — cannot predict')
+        print('Crop model not loaded — cannot predict')
         return jsonify({'error': 'Crop model not loaded on server. Check file paths.'}), 500
 
     def clamp(val, minv, maxv):
@@ -117,13 +113,12 @@ def recommend():
             'ph':          clamp(data.get('ph', 0),          3.5,  9.9),
             'rainfall':    clamp(data.get('rainfall', 0),    20,   300),
         }])
-        print('📥 Crop input:', features.to_dict(orient='records'))
+        print('Crop input:', features.to_dict(orient='records'))
 
         predicted_label = crop_model.predict(features)[0]
         crop_name = label_encoder.inverse_transform([predicted_label])[0]
         print(f'🌾 Predicted crop: {crop_name}')
 
-        # Get probability if model supports it
         confidence = 100
         if hasattr(crop_model, 'predict_proba'):
             probs = crop_model.predict_proba(features)[0]
@@ -145,13 +140,8 @@ def recommend():
         })
 
     except Exception:
-        print(f'❌ Crop prediction error:\n{traceback.format_exc()}')
+        print(f'Crop prediction error:\n{traceback.format_exc()}')
         return jsonify({'error': 'Prediction failed. Check server logs.'}), 500
-
-
-# ═══════════════════════════════════════════════
-# STATIC FILE SERVING (single catch-all route)
-# ═══════════════════════════════════════════════
 
 @app.route('/')
 def home():
@@ -166,11 +156,6 @@ def static_files(filename):
     if os.path.exists(fp):
         return send_from_directory(frontend_dir, filename)
     return f'{filename} not found', 404
-
-
-# ═══════════════════════════════════════════════
-# WEATHER
-# ═══════════════════════════════════════════════
 
 @app.route('/api/weather', methods=['GET'])
 def get_weather():
@@ -208,13 +193,8 @@ def get_weather():
             'humidity': humidity, 'rainfall': rainfall,
         })
     except Exception:
-        print(f'❌ Weather error:\n{traceback.format_exc()}')
+        print(f'Weather error:\n{traceback.format_exc()}')
         return jsonify({'error': 'Weather fetch failed'}), 500
-
-
-# ═══════════════════════════════════════════════
-# DISEASE DETECTION MODEL
-# ═══════════════════════════════════════════════
 
 def load_disease_model():
     base = os.path.dirname(__file__)
@@ -222,10 +202,10 @@ def load_disease_model():
     labels_path = os.path.join(base, '../data_ml/models/class_labels.json')
 
     if not os.path.exists(model_path):
-        print(f'❌ Disease model NOT found: {model_path}')
+        print(f'Disease model NOT found: {model_path}')
         return None, None
     if not os.path.exists(labels_path):
-        print(f'❌ Class labels NOT found: {labels_path}')
+        print(f'Class labels NOT found: {labels_path}')
         return None, None
     try:
         with open(labels_path, 'r') as f:
@@ -237,10 +217,10 @@ def load_disease_model():
         disease_model.classifier[3] = nn.Linear(disease_model.classifier[3].in_features, num_classes)
         disease_model.load_state_dict(torch.load(model_path, map_location='cpu'))
         disease_model.eval()
-        print('✅ Disease model loaded successfully')
+        print('Disease model loaded successfully')
         return disease_model, class_labels
     except Exception:
-        print(f'❌ Disease model load failed:\n{traceback.format_exc()}')
+        print(f'Disease model load failed:\n{traceback.format_exc()}')
         return None, None
 
 disease_model, disease_labels = load_disease_model()
@@ -287,8 +267,6 @@ def detect_disease():
             resp = jsonify({'error': 'not_plant', 'message': 'No plant leaf detected in image'})
             resp.status_code = 422
             return resp
-
-        # ✅ No Normalize — matches training exactly
         transform = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
@@ -333,13 +311,8 @@ def detect_disease():
         })
 
     except Exception:
-        print(f'❌ Disease detection error:\n{traceback.format_exc()}')
+        print(f'Disease detection error:\n{traceback.format_exc()}')
         return jsonify({'error': 'Detection failed. Check server logs.'}), 500
-
-
-# ═══════════════════════════════════════════════
-# AI CHAT PROXY (keeps HF token safe in backend)
-# ═══════════════════════════════════════════════
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -375,11 +348,6 @@ def chat():
     except Exception:
         print(f'❌ Chat error:\n{traceback.format_exc()}')
         return jsonify({'error': 'Chat request failed'}), 500
-
-
-# ═══════════════════════════════════════════════
-# CORS + RUN
-# ═══════════════════════════════════════════════
 
 @app.after_request
 def add_cors(response):

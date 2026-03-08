@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Kisan Sathi — Smart Farming Assistant</title>
+    <title>Kisan GPT — Smart Farming Assistant</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -1887,8 +1887,8 @@
           >
             <div class="logo-ico">🌿</div>
             <div>
-              <div class="logo-name">Kisan Sathi</div>
-              <div class="logo-sub">کسان ساتھی — Smart Farming</div>
+              <div class="logo-name">Kisan GPT</div>
+              <div class="logo-sub">کسان جی پی ٹی — Smart Farming</div>
             </div>
           </a>
           <nav>
@@ -2840,7 +2840,7 @@
         <!-- ═══ AI CHAT ═══ -->
         <section id="advisor" class="sec">
           <div class="sec-head">
-            <h2 class="sec-title">Ask Kisan Sathi AI</h2>
+            <h2 class="sec-title">Ask Kisan GPT</h2>
             <span class="sec-urdu"
               >کوئی بھی زراعت سوال پوچھیں — اردو یا انگریزی میں</span
             >
@@ -2849,9 +2849,9 @@
             <div class="chhdr">
               <div class="chav">🌿</div>
               <div>
-                <div class="chtit">Kisan Sathi AI Advisor</div>
+                <div class="chtit">Kisan GPT</div>
                 <div class="chonl">
-                  <span class="odot"></span>Online · کسان ساتھی AI
+                  <span class="odot"></span>Online · کسان جی پی ٹی
                 </div>
               </div>
             </div>
@@ -2859,11 +2859,11 @@
               <div class="msg ai">
                 <div class="mav aiav">🌿</div>
                 <div class="mbub">
-                  Assalam-o-Alaikum! I'm your Kisan Sathi AI. Ask me anything
+                  Assalam-o-Alaikum! I'm your Kisan GPT. Ask me anything
                   about farming — crops, soil, irrigation, fertilizers, pests,
                   or diseases. I'll answer in both English and Urdu.
                   <div class="murdu">
-                    السلام علیکم! میں آپ کا کسان ساتھی AI ہوں۔ فصل، مٹی، پانی،
+                    السلام علیکم! میں آپ کا کسان جی پی ٹی ہوں۔ فصل، مٹی، پانی،
                     کھاد، کیڑے — کسی بھی موضوع پر سوال پوچھیں۔
                   </div>
                 </div>
@@ -3725,7 +3725,7 @@ Rules: exactly 3 steps, exactly 2 chemicals, very simple words a village farmer 
         //   return;
         // }
 
-        const systemMsg = `You are Kisan Sathi AI helping a Pakistani farmer about their plant photo.
+        const systemMsg = `You are Kisan GPT helping a Pakistani farmer about their plant photo.
 The disease detection system identified: "${_currentDiseaseLabel}" on this plant.
 Answer the farmer's questions about this specific disease/plant in simple language.
 Reply format — two parts separated by ---:
@@ -3815,7 +3815,7 @@ Keep answers short, practical, and use words a village farmer understands.`;
       const HF_MODEL = "Qwen/Qwen2.5-72B-Instruct";
       const HF_API = "https://kisan-sathi-production.up.railway.app/api/chat";
 
-      const SYSTEM_PROMPT = `You are Kisan Sathi (کسان ساتھی), a warm and knowledgeable agricultural AI assistant for farmers in Pakistan and South Asia.
+      const SYSTEM_PROMPT = `You are Kisan GPT (کسان جی پی ٹی), a warm and knowledgeable agricultural AI assistant for farmers in Pakistan and South Asia.
 
 You must understand and reply to messages in:
 - English
