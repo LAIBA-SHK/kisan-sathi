@@ -1870,6 +1870,103 @@
           height: 18px;
         }
       }
+
+      /* ── HAMBURGER BUTTON ── */
+      .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        color: #fff;
+        transition: background 0.2s;
+        flex-shrink: 0;
+      }
+      .hamburger:hover {
+        background: rgba(255,255,255,0.1);
+      }
+      .hamburger svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+      }
+
+      /* ── MOBILE NAV OVERLAY ── */
+      .mobile-nav {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 199;
+        background: rgba(0,0,0,0.45);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        transition: opacity 0.25s;
+      }
+      .mobile-nav.open {
+        opacity: 1;
+      }
+      .mobile-nav-panel {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: linear-gradient(160deg, var(--gd) 0%, var(--gm) 100%);
+        border-bottom: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+        padding: 12px 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        transform: translateY(-10px);
+        transition: transform 0.25s;
+      }
+      .mobile-nav.open .mobile-nav-panel {
+        transform: translateY(0);
+      }
+      .mobile-nav .nb {
+        font-size: 0.95rem;
+        padding: 12px 16px;
+        border-radius: 10px;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 10px;
+        color: rgba(255,255,255,0.75);
+      }
+      .mobile-nav .nb span {
+        display: inline !important;
+      }
+      .mobile-nav .nb svg {
+        width: 18px;
+        height: 18px;
+      }
+      .mobile-nav .nb.on,
+      .mobile-nav .nb:hover {
+        color: #fff;
+        background: rgba(255,255,255,0.15);
+      }
+
+      @media (max-width: 640px) {
+        .hamburger {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        header nav {
+          display: none;
+        }
+        .logo-name {
+          font-size: 1.3rem;
+        }
+        .logo-sub {
+          font-size: 0.72rem;
+        }
+        .logo-ico {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1952,8 +2049,43 @@
               <span>Ask AI</span>
             </button>
           </nav>
+
+          <!-- Hamburger (mobile only) -->
+          <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Open menu">
+            <svg id="hamburgerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
         </div>
       </header>
+
+      <!-- Mobile Nav Overlay -->
+      <div class="mobile-nav" id="mobileNav" onclick="closeMobileMenu(event)">
+        <div class="mobile-nav-panel">
+          <button class="nb on" id="mnb-home" onclick="show('home'); closeMobileMenuDirect()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Home</span>
+          </button>
+          <button class="nb" id="mnb-crop" onclick="show('crop'); closeMobileMenuDirect()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12m0 0C12 7 7 4 2 6m10 6c0-5 5-8 10-6"/></svg>
+            <span>Crop Advisor</span>
+          </button>
+          <button class="nb" id="mnb-weather" onclick="show('weather'); closeMobileMenuDirect()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 110-14h.5A5.5 5.5 0 0117.5 19z"/></svg>
+            <span>Weather</span>
+          </button>
+          <button class="nb" id="mnb-disease" onclick="show('disease'); closeMobileMenuDirect()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Disease</span>
+          </button>
+          <button class="nb" id="mnb-advisor" onclick="show('advisor'); closeMobileMenuDirect()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            <span>Ask AI</span>
+          </button>
+        </div>
+      </div>
 
       <main>
         <!-- ═══ HOME ═══ -->
@@ -3143,7 +3275,38 @@
         document
           .querySelectorAll(".nb")
           .forEach((b, i) => b.classList.toggle("on", SECS[i] === id));
+        // Sync mobile nav active state
+        ["home","crop","weather","disease","advisor"].forEach(s => {
+          const mb = document.getElementById("mnb-" + s);
+          if (mb) mb.classList.toggle("on", s === id);
+        });
         if (id === "weather") loadWx("Lahore", document.querySelector(".chip"));
+      }
+
+      /* ═══ MOBILE MENU ════ */
+      function toggleMobileMenu() {
+        const nav = document.getElementById("mobileNav");
+        const icon = document.getElementById("hamburgerIcon");
+        const isOpen = nav.style.display === "flex";
+        if (isOpen) {
+          nav.classList.remove("open");
+          setTimeout(() => { nav.style.display = "none"; }, 250);
+          icon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+        } else {
+          nav.style.display = "flex";
+          requestAnimationFrame(() => nav.classList.add("open"));
+          icon.innerHTML = '<line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/>';
+        }
+      }
+      function closeMobileMenu(e) {
+        if (e.target === document.getElementById("mobileNav")) closeMobileMenuDirect();
+      }
+      function closeMobileMenuDirect() {
+        const nav = document.getElementById("mobileNav");
+        const icon = document.getElementById("hamburgerIcon");
+        nav.classList.remove("open");
+        setTimeout(() => { nav.style.display = "none"; }, 250);
+        icon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
       }
 
       /* ═══ SLIDER ════ */
